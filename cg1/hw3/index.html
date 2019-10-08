@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<body	onLoad="main()"
+				onMouseDown="mouse_down(event)"
+				onMouseUp="mouse_up(event)"
+				onMouseMove="mouse_move(event)">
+		<table>
+			<tr>
+				<th>
+					Select:
+					<input type="button" onclick="button_line()" value="Line" />
+					<input type="button" onclick="button_circle()" value="Circle" />
+					<input type="button" onclick="button_rectangle()" value="Rectangle" />
+				</th>
+				<th>
+					Modify:
+					<input type="button" onclick="button_translate()" value="Translate" /></button>
+					<input type="button" onclick="button_scale()" value="Scale"/>
+					<input type="button" onclick="button_rotate()" value="Rotate"/>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="2" align="left">
+					Mouse down to start modification, mouse up to finish.
+				</th>
+			</tr>
+		</table>
+		<div style="position:relative;">
+			<canvas id = "canvas" width = "640" height = "480" style="position:absolute; left:0; top:0; z-index:0;">Your browser does not support the HTML5 canvas tag.</canvas>
+		</div>
+		<div style="position:relative;">
+			<canvas id = "mask" width = "640" height = "480" style="position:absolute; left:0; top:0; z-index:0;">Your browser does not support the HTML5 canvas tag.</canvas>
+		</div>
+		<script>
+			var ctx = document.getElementById("canvas").getContext("2d");
+			var mctx = document.getElementById("mask").getContext("2d");
+			var line = {w:100, h:100, tx:100, ty:100, sx:1, sy:1, r:0};
+			var circle = {w:100, h:100, tx:100, ty:100, sx:1, sy:1, r:0};
+			var rectangle = {w:100, h:100, tx:100, ty:100, sx:1, sy:1, r:0};
+			var selectedObject = 0;
+			var selectedModify = 0;
+			var objects = [line, circle, rectangle];
+			main();
+			
+			async function main() {
+				ctx.strokeRect(0, 0, 640, 480);
+				mctx.strokeStyle = "red";
+				ctx.lineWidth = 2;
+				mctx.lineWidth = 2;
+				draw_shapes();
+			}
+			
+			var downX;
+			var downY;
+			var dx;
+			var dy;
+			var dtx = 0;
+			var dty = 0;
+			var dsx = 0;
+			var dsy = 0;
+			var dr = 0;
+			var mouseDown = false;
+			function mouse_down(event) {
+				mouseDown = true;
+				downX = event.clientX;
+				downY = event.clientY;
+			}
+			
+			function mouse_up(event) {
+				mouseDown = false;
+				if (selectedObject != 0) {
+					if (selectedModify == 1) {
+						objects[selectedObject - 1].tx += dtx;
+						objects[selectedObject - 1].ty += dty;
+					} else if (selectedModify == 2) {
+						objects[selectedObject - 1].sx += dsx;
+						objects[selectedObject - 1].sy += dsy;
+					} else if (selectedModify == 3) {
+						objects[selectedObject - 1].r += dr;
+					}
+				}
+				dtx = 0;
+				dty = 0;
+				dsx = 0;
+				dsy = 0;
+				dr = 0;
+				draw_shapes();
+			}
+			
+			function mouse_move(event) {
+				x = event.clientX;
+				y = event.clientY;
+				if (mouseDown) {
+					dx = x - downX;
+					dy = y - downY;
+				} else {
+					dx = 0;
+					dy = 0;
+				}
+				if (selectedObject != 0) {
+					if (selectedModify == 1) {
+						dtx = dx;
+						dty = dy;
+					} else if (selectedModify == 2) {
+						dsx = dx / 100;
+						dsy = dy / 100;
+					} else if (selectedModify == 3) {
+						dr = dx / 100;
+					}
+				}
+				mctx.clearRect(0, 0, 640, 480);
+				if (selectedObject == 1) {
+					draw_line(line);
+				} else if (selectedObject == 2) {
+					draw_circle(circle);
+				} else if (selectedObject == 3) {
+					draw_rectangle(rectangle);
+				}
+			}
+			
+			function button_line() {
+				selectedObject = (selectedObject == 1 ? 0 : 1);
+				draw_shapes();
+			}
+			
+			function button_circle() {
+				selectedObject = (selectedObject == 2 ? 0 : 2);
+				draw_shapes();
+			}
+			
+			function button_rectangle() {
+				selectedObject = (selectedObject == 3 ? 0 : 3);
+				draw_shapes();
+			}
+			
+			function button_translate() {
+				selectedModify = (selectedModify == 1 ? 0 : 1);
+			}
+			
+			function button_scale() {
+				selectedModify = (selectedModify == 2 ? 0 : 2);
+			}
+			
+			function button_rotate() {
+				selectedModify = (selectedModify == 3 ? 0 : 3);
+			}
+			
+			function draw_line(line) {
+				if (selectedObject == 1) {
+					mctx.rotate(line.r + dr);
+					mctx.scale(line.sx + dsx, line.sy + dsy);
+					mctx.beginPath();
+					mctx.moveTo(line.tx + dtx, line.ty + dty);
+					mctx.lineTo(line.tx + dtx + line.w, line.ty + dty + line.h);
+					mctx.stroke();
+					mctx.scale(1 / (line.sx + dsx), 1 / (line.sy + dsy));
+					mctx.rotate(-line.r - dr);
+				} else {
+					ctx.rotate(line.r);
+					ctx.scale(line.sx + dsx, line.sy + dsy);
+					ctx.beginPath();
+					ctx.moveTo(line.tx, line.ty);
+					ctx.lineTo(line.tx + line.w, line.ty + line.h);
+					ctx.stroke();
+					ctx.scale(1 / (line.sx + dsx), 1 / (line.sy + dsy));
+					ctx.rotate(-line.r);
+				}
+
+			}
+			
+			function draw_circle(circle) {
+				if (selectedObject == 2) {
+					mctx.rotate(circle.r + dr);
+					mctx.scale(circle.sx + dsx, circle.sy + dsy);
+					mctx.beginPath();
+					mctx.ellipse(circle.tx + dtx + circle.w / 2, circle.ty + dty + circle.h / 2, circle.w / 2, circle.h / 2, 0, 0, 2 * Math.PI);
+					mctx.stroke();
+					mctx.scale(1 / (circle.sx + dsx), 1 / (circle.sy + dsy));
+					mctx.rotate(-circle.r - dr);
+				} else {
+					ctx.rotate(circle.r);
+					ctx.scale(circle.sx + dsx, circle.sy + dsy);
+					ctx.beginPath();
+					ctx.ellipse(circle.tx + circle.w / 2, circle.ty + circle.h / 2, circle.w / 2, circle.h / 2, 0, 0, 2 * Math.PI);
+					ctx.stroke();
+					ctx.scale(1 / (circle.sx + dsx), 1 / (circle.sy + dsy));
+					ctx.rotate(-circle.r);
+				}
+			}
+			
+			function draw_rectangle(rectangle) {
+				if (selectedObject == 3) {
+					mctx.rotate(rectangle.r + dr);
+					mctx.scale(rectangle.sx + dsx, rectangle.sy + dsy);
+					mctx.strokeRect(rectangle.tx + dtx, rectangle.ty + dty, rectangle.w, rectangle.h);
+					mctx.scale(1 / (rectangle.sx + dsx), 1 / (rectangle.sy + dsy));
+					mctx.rotate(-rectangle.r - dr);
+				} else {
+					ctx.rotate(rectangle.r);
+					ctx.scale(rectangle.sx + dsx, rectangle.sy + dsy);
+					ctx.strokeRect(rectangle.tx, rectangle.ty, rectangle.w, rectangle.h);
+					ctx.scale(1 / (rectangle.sx + dsx), 1 / (rectangle.sy + dsy));
+					ctx.rotate(-rectangle.r);
+				}
+			}
+			
+			function draw_shapes() {
+				ctx.clearRect(0, 0, 640, 480);
+				ctx.strokeRect(0, 0, 640, 480);
+				mctx.clearRect(0, 0, 640, 480);
+				draw_line(line);
+				draw_circle(circle);
+				draw_rectangle(rectangle);
+			}
+			
+			/*
+			var fps = 60;
+			var time = Date.now();
+			function frameLock() {
+				var now = Date.now();
+				var waitFor = (1000 / fps) + now - time;
+				fps = now;
+				return new Promise(resolve => setTimeout(resolve, waitFor));
+			}*/
+		</script>
+	</body>
+</html>
+

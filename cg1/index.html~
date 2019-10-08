@@ -1,0 +1,31 @@
+<!-- Copyright (CC BY-NC) 2019 by Beck A. Peterson. -->
+<!-- Beck A. Peterson -->
+<!-- beck_peterson@student.uml.edu -->
+<!-- I am addiliated as a student at UMass Lowell in course 91.61 GUI Programming I -->
+<!-- File created on 9/13/19 -->
+<!-- This is just a file for testing linking in my navigation -->
+
+<!-- For comments about the external html and structure of the page, read the comments in index.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <base href="http://cs.uml.edu/~bpeterso/">
+    <head>
+        
+        <meta charset="utf-8">
+        <title>Beck Peterson Undergrad Portfolio</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js"></script>
+        
+    </head>
+    <body>
+        <div class="external-html" id="base.html"></div>
+        
+        <div class="contents">
+            <div class="padded">
+                <p>This is just for testing purposes</p>
+            </div>
+        </div>
+        
+        <script>loadHTML();</script>
+    </body>
+</html>

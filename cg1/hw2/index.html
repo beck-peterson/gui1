@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<canvas id = "canvas" width = "640" height = "480" style="border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.
+		</canvas>
+		<script>
+			var ctx = document.getElementById("canvas").getContext("2d");
+			main();
+			
+			async function main() {
+				var i = 0;
+				while (true) {
+					var transformation = {
+						translationX: 200,
+						translationY: 100,
+						scalingX: 0.2 + Math.abs(0.8 * Math.sin(i / 5)),
+						scalingY: 0.2 + Math.abs(0.8 * Math.sin(i / 3)),
+						rotation: i * 3
+					};
+					ctx.fillStyle = "white";
+					ctx.fillRect(0, 0, 640, 480);
+					ctx.fillStyle = 'hsla(' + i * 15 + ', 100%, 50%, 1)';
+					DDA(10, 10, 70, 80, transformation);
+					transformation.translationX = transformation.translationX + Math.abs(50 * Math.sin(i / 3));
+					transformation.translationY = transformation.translationY + Math.abs(100 * Math.sin(i / 2));
+					transformation.rotation = -transformation.rotation;
+					MidpointLine(10, 110, 70, 280, transformation);
+					transformation.rotation = -transformation.rotation;
+					transformation.translationX = transformation.translationX + Math.abs(50 * Math.cos(i / 4));
+					transformation.translationY = transformation.translationY + Math.abs(100 * Math.cos(i));
+					MidpointCircle(250, transformation);
+					transformation.translationX = transformation.translationX + Math.abs(50 * Math.sin(i / 7));
+					transformation.translationY = transformation.translationY + Math.abs(100 * Math.sin(i / 5));
+					MidpointEllipse(150, 100, transformation);
+					transformation.translationX = transformation.translationX - Math.abs(50 * Math.sin(i / 2));
+					transformation.translationY = transformation.translationY - Math.abs(100 * Math.sin(i / 3));
+					Rectangle(50, 100, 250, 150, transformation);
+					await sleep (20);
+					i = i + 0.015;
+				}
+			}
+			
+			function sleep(ms) {
+				return new Promise(resolve => setTimeout(resolve, ms));
+			}
+			
+			function DDA(x0, y0, x1, y1, transformation) {
+				dx = x1 - x0;
+				dy = y1 - y0;
+				dydx = dy / dx;
+				dxdy = dx / dy;
+				x = x0;
+				y = y0;
+				for (x = x0; x <= x1; x++) {
+					pixel(x, y, transformation);
+					y = y + dydx;
+				}
+			}
+			
+			function MidpointLine(x0, y0, x1, y1, transformation, flip = false) {
+				dx = x1 - x0;
+				dy = y1 - y0;
+				if (dy > dx) {
+					MidpointLine(y0, x0, y1, x1, transformation, true);
+					return;
+				}
+				d = 2 * dy - dx;
+				incrE = 2 * dy;
+				incrNE = 2 * (dy - dx);
+				x = x0;
+				y = y0;
+				pixel(x, y, transformation, flip);
+				while (x < x1) {
+					if (d <= 0) {
+						d = d + incrE;
+					} else {
+						d = d + incrNE;
+						y++;
+					}
+					x++;
+					pixel(x, y, transformation, flip);
+				}
+			}
+			
+			function Rectangle(x0, y0, x1, y1, transformation) {
+				MidpointLine(x0, y0, x0, y1, transformation);
+				MidpointLine(x0, y0, x1, y0, transformation);
+				MidpointLine(x0, y1, x1, y1, transformation);
+				MidpointLine(x1, y0, x1, y1, transformation);
+			}
+			
+			function MidpointCircle(r, transformation) {
+				x = 0;
+				y = r;
+				d = 5.0 / 4.0 - r;
+				pixel(x, y, transformation);
+				while (y > x) {
+					if (d < 0) {
+						d = d + 2.0 * x + 3.0;
+					} else {
+						d = d + 2.0 * (x - y) + 5.0;
+						y--;
+					}
+					x++;
+					pixel(x, y, transformation);
+				}
+			}
+			
+			function MidpointEllipse(a, b, transformation) {
+				x = 0;
+				y = b;
+				d1 = (b * b) - (a * a * b) + (0.25 * a * a);
+				EllipsePoints(x, y, transformation);
+				while (((a * a) * (y - 0.5)) > ((b * b) * (x + 1))) {
+					if (d1 < 0) {
+						d1 = d1 + ((b * b) * (2 * x + 3));
+					} else {
+						d1 = d1 + ((b * b) * (2 * x + 3)) + ((a * a) * (-2 * y + 2));
+						y--;
+					}
+					x++;
+					EllipsePoints(x, y, transformation);
+				}
+				d2 = ((b * b) * (x + 0.5) * (x + 0.5)) + ((a * a) * (y - 1) * (y - 1)) - (a * a * b * b);
+				while (y > 0) {
+					if (d2 < 0) {
+						d2 = d2 + ((b * b) * (2 * x + 2)) + ((a * a) * (-2 * y + 3));
+						x++;
+					} else {
+						d2 = d2 + ((a * a) * (-2 * y + 3));
+					}
+					y--;
+					EllipsePoints(x, y, transformation);
+				}
+			}
+			
+			function CirclePoints(x, y, transformation) {
+				EllipsePoints(x, y, transformation);
+				EllipsePoints(y, x, transformation);
+			}
+			
+			function EllipsePoints(x, y, transformation) {
+				transformPixel(x, y, transformation);
+				transformPixel(x, -y, transformation);
+				transformPixel(-x, y, transformation);
+				transformPixel(-x, -y, transformation);
+			}
+			
+			function pixel(x, y, transformation, flip = false) {
+				if (flip) {
+					transformPixel(y, x, transformation);
+				} else {
+					transformPixel(x, y, transformation);
+				}
+			}
+			
+			function transformPixel(x, y, transformation) {
+				if (transformation.rotation != 0) {
+					r = Math.sqrt(x * x + y * y);
+					a = Math.atan(y / x);
+					if (x < 0) a = a + Math.PI;
+					x = r * Math.cos(transformation.rotation + a);
+					y = r * Math.sin(transformation.rotation + a);
+				}
+				if (transformation.translationX != 0) {
+					x = x + transformation.translationX;
+				}
+				if (transformation.translationY != 0) {
+					y = y + transformation.translationY;
+				}
+				if (transformation.scalingX != 0) {
+					x = x * transformation.scalingX;
+				}
+				if (transformation.scalingY != 0) {
+					y = y * transformation.scalingY;
+				}
+				ctx.fillRect(x, y, 1, 1);
+			}
+		</script>
+	</body>
+</html>

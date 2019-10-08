@@ -1,0 +1,48 @@
+/* Copyright (CC BY-NC) 2019 by Beck A. Peterson. */
+/* Beck A. Peterson */
+/* beck_peterson@student.uml.edu */
+/* I am affiliated as a student at UMass Lowell in course 91.61 GUI Programming I */
+/* File created on 9/12/19 */
+/* The purpose of this file is to define a set of colors to be a pallet so I can consistantly
+   and smoothly implement colors in my main css file */
+
+:root {
+    
+    /* main color pallet */
+    --blue1:  #ffffff; /*           white */
+    --blue2:  #e6f1ff;
+    --blue3:  #ccf5ff; /* very light blue */
+    --blue4:  #b3f0ff;
+    --blue5:  #99ebff;
+    --blue6:  #80e5ff;
+    --blue7:  #66e0ff; /*      light blue */
+    --blue8:  #4ddbff;
+    --blue9:  #33d6ff;
+    --blue10: #1ad1ff;
+    --blue11: #00ccff; /*            blue */
+    --blue12: #00b8e6;
+    --blue13: #00a3cc;
+    --blue14: #008fb3;
+    --blue15: #007a99; /*       dark blue */
+    --blue16: #006680;
+    --blue17: #005266;
+    --blue18: #003d4d;
+    --blue19: #002933; /*  very dark blue */
+    --blue20: #00141a;
+    --blue21: #000000; /*           black */
+    
+    /* blues */
+    --very-light-blue: var(--blue3);
+    --light-blue:      var(--blue7);
+    --blue:            var(--blue11);
+    --dark-blue:       var(--blue15);
+    --very-dark-blue:  var(--blue19);
+    
+    /* greens */
+    --very-light-green: #ccffd9; /* --green3 */
+    --light-green:      #6688fc; /* --green7 */
+    --green:            #00ff40; /* --green11 */
+    --dark-green:       #009926; /* --green15 */
+    --very-dark-green:  #00330d; /* --green19 */
+    
+}

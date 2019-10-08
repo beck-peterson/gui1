@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<canvas id = "canvas" width = "640" height = "480" style="border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.
+		</canvas>
+		<script>
+			var ctx = document.getElementById("canvas").getContext("2d");
+			
+			DDA(10, 10, 70, 80);
+			MidpointLine(10, 110, 70, 280);
+			MidpointCircle(250);
+			MidpointEllipse(150,100);
+			
+			function DDA(x0, y0, x1, y1) {
+				dx = x1 - x0;
+				dy = y1 - y0;
+				dydx = dy / dx;
+				dxdy = dx / dy;
+				x = x0;
+				y = y0;
+				for (x = x0; x <= x1; x++) {
+					pixel(x, y);
+					y = y + dydx;
+				}
+			}
+			
+			function MidpointLine(x0, y0, x1, y1, flip = false) {
+				dx = x1 - x0;
+				dy = y1 - y0;
+				if (dy > dx) {
+					MidpointLine(y0, x0, y1, x1, true);
+					return;
+				}
+				d = 2 * dy - dx;
+				incrE = 2 * dy;
+				incrNE = 2 * (dy - dx);
+				x = x0;
+				y = y0;
+				pixel(x, y, flip);
+				while (x < x1) {
+					if (d <= 0) {
+						d = d + incrE;
+					} else {
+						d = d + incrNE;
+						y++;
+					}
+					x++;
+					pixel(x, y, flip);
+				}
+			}
+			
+			function MidpointCircle(r) {
+				x = 0;
+				y = r;
+				d = 5.0 / 4.0 - r;
+				CirclePoints(x, y);
+				while (y > x) {
+					if (d < 0) {
+						d = d + 2.0 * x + 3.0;
+					} else {
+						d = d + 2.0 * (x - y) + 5.0;
+						y--;
+					}
+					x++;
+					CirclePoints(x, y);
+				}
+			}
+			
+			function MidpointEllipse(a, b) {
+				x = 0;
+				y = b;
+				d1 = (b * b) - (a * a * b) + (0.25 * a * a);
+				EllipsePoints(x, y);
+				while (((a * a) * (y - 0.5)) > ((b * b) * (x + 1))) {
+					if (d1 < 0) {
+						d1 = d1 + ((b * b) * (2 * x + 3));
+					} else {
+						d1 = d1 + ((b * b) * (2 * x + 3)) + ((a * a) * (-2 * y + 2));
+						y--;
+					}
+					x++;
+					EllipsePoints(x, y);
+				}
+				d2 = ((b * b) * (x + 0.5) * (x + 0.5)) + ((a * a) * (y - 1) * (y - 1)) - (a * a * b * b);
+				while (y > 0) {
+					if (d2 < 0) {
+						d2 = d2 + ((b * b) * (2 * x + 2)) + ((a * a) * (-2 * y + 3));
+						x++;
+					} else {
+						d2 = d2 + ((a * a) * (-2 * y + 3));
+					}
+					y--;
+					EllipsePoints(x, y);
+				}
+			}
+			
+			function CirclePoints(x, y) {
+				EllipsePoints(x, y);
+				EllipsePoints(y, x);
+			}
+			
+			function EllipsePoints(x, y) {
+				pixel(x, y);
+				pixel(x, -y);
+				pixel(-x, y);
+				pixel(-x, -y);
+			}
+			
+			function pixel(x, y, flip = false) {
+				if (flip) {
+					ctx.fillRect(y, x, 1, 1);
+				} else {
+					ctx.fillRect(x, y, 1, 1);
+				}
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!-- Copyright (CC BY-NC) 2019 by Beck A. Peterson. -->
+<!-- Beck A. Peterson -->
+<!-- beck_peterson@student.uml.edu -->
+<!-- I am affiliated as a student at UMass Lowell in course 91.61 GUI Programming I -->
+<!-- File created on 9/12/19 -->
+<!-- This is my home page -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <base href="http://cs.uml.edu/~bpeterso/">
+        <meta charset="utf-8">
+        <title>Beck Peterson Undergrad Portfolio</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="scripts.js"></script>
+        
+    </head>
+    <body>
+        <!-- This links html from a separate file into each page to keep the look and feel consistant
+             without having to go through each webpage individually if I decide to change the structure
+             of the header and border. The code that is brought in is found in base.html -->
+        <div class="external-html" id="base.html"></div>
+        
+        <div class="contents">
+            <!-- This is to help block sections of the site for ease of reading -->
+            <div class="padded">
+                <h2>About Me</h2>
+                <h3>Degree</h3>
+                <p>I'm a Computer Science Major and Math Minor at UMass Lowell.</p>
+            </div>
+            <br>
+            <!-- This is to separate the sections of the page -->
+            <div class="separator">
+                <h3>Course Materials</h3>
+            </div>
+            <div class="padded">
+                <h2>Fall 2019</h2>
+                <h3>GUI I</h3>
+                <p>TODO: Fill this part of the website in with all the crazy amazing stuff I make in GUI I</p>
+            </div>
+            <div class="padded">
+                <h2>Spring 2019</h2>
+                <h3>Computer Graphics I</h3>
+                <ul>
+                    <li><a href="cg1/p1">Image Editor</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- This is the script that I modified from w3schools to allow me to easily pull html from
+             another file as stated above -->
+        <script>loadHTML();</script>
+    </body>
+</html>

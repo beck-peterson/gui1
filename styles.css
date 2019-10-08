@@ -1,0 +1,160 @@
+/* Copyright (CC BY-NC) 2019 by Beck A. Peterson. */
+/* Beck A. Peterson */
+/* beck_peterson@student.uml.edu */
+/* I am affiliated as a student at UMass Lowell in course 91.61 GUI Programming I */
+/* File created on 9/12/19 */
+/* This file defines all of my main css that is used for my web page */
+
+/* This is to keep the main css file rgb code and rgb table free */
+@import "colors.css";
+
+/***************/
+/* General CSS */
+/***************/
+
+* { /* Remove all padding so I can add my own */
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background: var(--blue1);
+    color: var(--very-dark-blue);
+}
+
+h1, h3 {
+    margin-left: 20px;
+}
+
+p {
+    margin-left: 30px;
+}
+
+h1 a {
+    font-size: 50%;
+    color: var(--blue5);
+    text-shadow: 1px 1px 3px var(--blue17);
+}
+
+
+/*****************/
+/* Major Classes */
+/*****************/
+
+.skirt { /* Skirt at the top of the site */
+    background: var(--blue);
+    color: var(--very-light-blue);
+    text-shadow: 1px 1px 3px var(--very-dark-blue);
+    height: 40px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+}
+
+.contents {
+    padding: 30px;
+    padding-top: 70px;
+}
+
+.padded {
+    margin: 10px;
+    padding: 10px;
+    background: var(--very-light-blue);
+    border-radius: 10px;
+}
+
+.contents ul {
+    margin-left: 50px; /* Needs +10px for bullet point space */
+}
+
+div.border:before {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: calc(100% - 80px);
+    height: calc(100% - 120px);
+    border: 20px solid var(--very-dark-blue);
+    pointer-events: none;
+}
+
+div.border {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: calc(100% - 40px);
+    height: calc(100% - 80px);
+    border: 20px solid var(--very-light-blue);
+    pointer-events: none;
+}
+
+.separator {
+    border-bottom: 2px solid black;
+    height: 10px;
+}
+
+.separator h3 {
+    background: var(--blue1);
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/********************************************/
+/* navigation was assisted by w3schools.com */
+/********************************************/
+
+ul.navigation {
+    list-style-type: none;
+    overflow: hidden;
+    margin-left: 20px;
+    background: var(--blue13);
+    border-radius: 5px;
+}
+
+ul.navigation li {
+    float: left;
+    margin: 2px;
+}
+
+ul.navigation li a.selected {
+    color: var(--blue);
+}
+
+ul.navigation li a {
+    display: block;
+    color: var(--blue1);
+    text-align: center;
+    text-decoration: none;
+    padding: 5px;
+    background: var(--blue13);
+    border-radius: 5px;
+}
+
+ul.navigation li a:hover {
+    transition: background 0.075s ease;
+    background: var(--dark-blue);
+}
+
+/******************************************/
+/* dropdown was assisted by w3schools.com */
+/******************************************/
+
+div.dropdown {
+    position: absolute;
+    display: none;
+    background: var(--blue13);
+    padding: 2px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+div.dropdown a {
+    display: block;
+    background: var(--blue);
+    font-size: 75%;
+}
+
+ul.navigation li:hover div.dropdown {
+    display: block;
+}

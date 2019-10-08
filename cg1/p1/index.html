@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			.hidden {
+				position: absolute;
+				left: -10000px;
+				top: auto;
+				width: 1px;
+				height: 1px;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body	onLoad="main()"
+				onMouseDown="mouse_down(event)"
+				onMouseUp="mouse_up(event)"
+				onMouseMove="mouse_move(event)">
+		<table>
+			<tr>
+				<input type="file" id="openFile" class="hidden">
+			</tr>
+		</table>
+		<div style="position:relative;">
+			<canvas id = "canvas" width = "962" height = "542" style="position:absolute; left:0; top:0; z-index:0;">Your browser does not support the HTML5 canvas tag.</canvas>
+		</div>
+		<div style="position:relative;">
+			<canvas id = "mask" width = "962" height = "542" style="position:absolute; left:0; top:0; z-index:0;">Your browser does not support the HTML5 canvas tag.</canvas>
+		</div>
+		<div style="position:relative;">
+			<canvas id = "overlay" width = "962" height = "542" style="position:absolute; left:0; top:0; z-index:0;">Your browser does not support the HTML5 canvas tag.</canvas>
+		</div>
+		<input type="color" id="colorPicker" tabindex=-1 class="hidden">
+		<script>
+			var ctx = document.getElementById("canvas").getContext("2d");
+			var mctx = document.getElementById("mask").getContext("2d");
+			var objects = [];
+			var displayObjects = [];
+			var functionObjects = [];
+			var trash;
+			var selectedObject = null;
+			var selectedModify = 0;
+			var selectedPoint = -1;
+			var modifyPoints = 0;
+			var selectedCorner = 1;
+			var selectedFunction = 0;
+			var selectedDisplay = -1;
+			var selectorSize = 8;
+			
+			function main() {
+				displayObjects.push({t:"line", w:65, h:1, tx:31, ty:31, r:Math.PI / 4, thickness:2, stroke:"#808080", fill:"#D3D3D3", points:[]});
+				displayObjects.push({t:"triangle", w:50, h:50, tx:31, ty:91, r:0, thickness:2, stroke:"#808080", fill:"#D3D3D3", points:[[0, 0], [0, 1], [1, 1]]});
+				displayObjects.push({t:"square", w:50, h:50, tx:31, ty:151, r:0, thickness:2, stroke:"#808080", fill:"#D3D3D3", points:[[0, 0], [0, 1], [1, 1], [1, 0]]});
+				displayObjects.push({t:"rectangle", w:50, h:35, tx:31, ty:211, r:0, thickness:2, stroke:"#808080", fill:"#D3D3D3", points:[[0, 0], [0, 1], [1, 1], [1, 0]]});
+				displayObjects.push({t:"circle", w:50, h:50, tx:31, ty:271, r:0, thickness:2, stroke:"#808080", fill:"#D3D3D3", points:[]});
+				displayObjects.push({t:"ellipse", w:50, h:35, tx:31, ty:331, r:0, thickness:2, stroke:"#808080", fill:"#D3D3D3", points:[]});
+				displayObjects.push({t:"polygon", w:50, h:50, tx:31, ty:391, r:0, thickness:2, stroke:"#808080", fill:"#D3D3D3", points:[[0, 0], [0, 0.7], [0.3, 1], [1, 0.7], [0.9, 0.1]]});
+				displayObjects.push({t:"polyline", w:50, h:50, tx:31, ty:451, r:0, thickness:2, stroke:"#808080", fill:"none", points:[[0, 0], [0, 0.7], [0.3, 1], [1, 0.7], [0.9, 0.1]]});
+				displayObjects.push({t:"curve", w:50, h:50, tx:31, ty:511, r:0, thickness:2, stroke:"#808080", fill:"none", points:[[0, 0], [0.25, 0.75], [1, 1]]});
+				functionObjects.push({t:"thickness", w:47, h:32, tx:931, ty:31, r:0, thickness:5, stroke:"#808080", fill:"#D3D3D3"});
+				functionObjects.push({t:"stroke", w:50, h:35, tx:931, ty:91, r:0, thickness:2, stroke:"#FFA500", fill:"#D3D3D3"});
+				functionObjects.push({t:"fill", w:50, h:35, tx:931, ty:151, r:0, thickness:2, stroke:"#808080", fill:"#FFA500"});
+				functionObjects.push({t:"import", w:50, h:50, tx:931, ty:331, r:0, thickness:2, stroke:"#808080", fill:"none"});
+				functionObjects.push({t:"download", w:50, h:50, tx:931, ty:391, r:0, thickness:2, stroke:"#808080", fill:"none"});
+				functionObjects.push({t:"export", w:50, h:50, tx:931, ty:451, r:0, thickness:2, stroke:"#808080", fill:"none"});
+				trash = {t:"trash", w:50, h:50, tx:931, ty:515, r:0, thickness:2, stroke:"#808080", fill:"none"};
+				functionObjects.push(trash);
+				
+				draw_overlay();
+				
+				document.getElementById("overlay").addEventListener("contextmenu", function(e) {
+					if (e.button == 2) e.preventDefault();
+				});
+				document.getElementById("colorPicker").addEventListener("change", colorPickerInput, false);
+				document.getElementById("openFile").addEventListener("change", function() {
+					var fr = new FileReader();
+					fr.onload = function() {
+						var loadedFile = JSON.parse(this.result);
+						objects = loadedFile.objects;
+						displayObjects.forEach(object => {
+							object.stroke = loadedFile.stroke;
+							object.fill = loadedFile.fill;
+							object.thickness = loadedFile.thickness;
+						});
+						draw_shapes();
+						draw_overlay();
+					}
+					fr.readAsText(this.files[0]);
+				});
+				
+				mctx.strokeStyle = "red";
+				mctx.lineWidth = 2;
+				ctx.lineWidth = 2;
+				draw_shapes();
+			}
+			
+			var downX = 0;
+			var downY = 0;
+			var dx = 0;
+			var dy = 0;
+			var dtx = 0;
+			var dty = 0;
+			var dw = 0;
+			var dh = 0;
+			var dr = 0;
+			var spdx = 0;
+			var spdy = 0;
+			var mouseDown = false;
+			var downTime = 0;
+			function mouse_down(event) {
+				downTime = new Date().getTime();
+				mouseDown = true;
+				bounds = document.getElementById("canvas").getBoundingClientRect();
+				downX = event.clientX - bounds.left;
+				downY = event.clientY - bounds.top;
+				if (event.button == 2) {
+					if (modifyPoints == 4) {
+						selectedObject.points.splice(selectedObject.points.length - 1, 1);
+					}
+					selectedModify = 0;
+					modifyPoints = 0;
+					selectedDisplay = -1;
+					draw_overlay();
+				}
+				functionObjects.forEach(object => {
+					if (clickedShape(object, selectorSize)) {
+						if (object.t == "thickness") {
+							if (selectedObject != null) {
+								var thickness = prompt("Thickness:", selectedObject.thickness);
+								selectedObject.thickness = thickness;
+								draw_shapes();
+							} else {
+								var thickness = prompt("Thickness:", displayObjects[0].thickness);
+								displayObjects.forEach(object => {
+									object.thickness = thickness;
+								});
+								draw_overlay();
+							}
+						} else if (object.t == "stroke") {
+							selectedModify = -1;
+							if (selectedObject != null) {
+								selectedFunction = 2;
+								document.getElementById("colorPicker").value = selectedObject.stroke;
+							} else {
+								selectedFunction = 4;
+								document.getElementById("colorPicker").value = displayObjects[0].stroke;
+							}
+							document.getElementById("colorPicker").click();
+						} else if (object.t == "fill") {
+							selectedModify = -1;
+							if (selectedObject != null) {
+								selectedFunction = 3;
+								document.getElementById("colorPicker").value = selectedObject.fill;
+							} else {
+								selectedFunction = 5;
+								document.getElementById("colorPicker").value = displayObjects[0].fill;
+							}
+							document.getElementById("colorPicker").click();
+						} else if (object.t == "download") {
+							selectedObject = null;
+							downloadFile();
+						} else if (object.t == "import") {
+							selectedObject = null;
+							importFile();
+						} else if (object.t == "export") {
+							selectedObject = null;
+							exportFile();
+						} else if (object.t == "trash" && selectedObject != null) {
+							index = objects.indexOf(selectedObject);
+							if (index > -1) {
+								objects.splice(index, 1);
+								selectedObject = null;
+							}
+						}
+					}
+				});
+				displayObjects.forEach(object => {
+					if (clickedShape(object, selectorSize)) {
+						newObject = {t:"", w:0, h:0, tx:0, ty:0, r:0, thickness:0, stroke:"", fill:""};
+						if (object.t == "polyline" || object.t == "polygon") {
+							selectedDisplay = displayObjects.indexOf(object);
+							draw_overlay();
+							newObject.w = 0.01;
+							newObject.h = 0.01;
+							newObject.r = 0;
+							newObject.points = [];
+							modifyPoints = 3;
+							selectedModify = 5;
+						} else {
+							newObject.w = object.w * 2;
+							newObject.h = object.h * 2;
+							newObject.r = object.r;
+							newObject.points = [];
+							for (i = 0; i < object.points.length; i++) {
+								newObject.points.push([object.points[i][0], object.points[i][1]]);
+							}
+						}
+						newObject.t = object.t;
+						newObject.tx = object.tx;
+						newObject.ty = object.ty;
+						newObject.thickness = object.thickness;
+						newObject.stroke = object.stroke;
+						newObject.fill = object.fill;
+						objects.push(newObject);
+						selectedObject = newObject;
+						draw_shapes();
+					}
+				});
+				if (selectedObject != null && selectedModify != -1) {
+					if (selectedObject.t == "line") {
+						if (clickedPoint(selectedObject, -selectedObject.w / 2, -selectedObject.h / 2, selectorSize)) {
+							selectedCorner = 1;
+							selectedModify = 2;
+						} else if (clickedPoint(selectedObject, selectedObject.w / 2, selectedObject.h / 2, selectorSize)) {
+							selectedCorner = 128;
+							selectedModify = 2;
+						} else if (clickedShape(selectedObject, selectorSize)) {
+							selectedModify = 1;
+						} else {
+							selectedModify = 0;
+						}
+					} else {
+						if (modifyPoints == 2) {
+							for (i = 0; i < selectedObject.points.length; i++) {
+								if (clickedPoint(selectedObject, selectedObject.points[i][0] * selectedObject.w - selectedObject.w / 2, selectedObject.points[i][1] * selectedObject.h - selectedObject.h / 2, selectorSize)) {
+									selectedPoint = i;
+									selectedModify = 4;
+								}
+							}
+							if (selectedPoint == -1) {
+								if (clickedShape(selectedObject, 0)) {
+									selectedModify = 1;
+								} else {
+									selectedModify = 0;
+									modifyPoints = 0;
+								}
+							}
+						} else if (modifyPoints == 3) {
+						} else if (modifyPoints == 4) {
+							if (selectedObject.points.length == 0) {
+								selectedObject.points = [[0, 0], [0, 0]];
+								selectedObject.tx = downX;
+								selectedObject.ty = downY;
+							} else {
+								selectedObject.points.push([(downX - selectedObject.tx + selectedObject.w / 2) / selectedObject.w, (downY - selectedObject.ty + selectedObject.h / 2) / selectedObject.h]);
+								fixPoints(selectedObject);
+							}
+						} else {
+							if (clickedPoint(selectedObject, -selectedObject.w / 2, -selectedObject.h / 2, selectorSize)) {
+								selectedCorner = 1;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, 0, -selectedObject.h / 2, selectorSize)) {
+								selectedCorner = 2;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, selectedObject.w / 2, -selectedObject.h / 2, selectorSize)) {
+								selectedCorner = 4;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, -selectedObject.w / 2, 0, selectorSize)) {
+								selectedCorner = 8;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, selectedObject.w / 2, 0, selectorSize)) {
+								selectedCorner = 16;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, -selectedObject.w / 2, selectedObject.h / 2, selectorSize)) {
+								selectedCorner = 32;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, 0, selectedObject.h / 2, selectorSize)) {
+								selectedCorner = 64;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, selectedObject.w / 2, selectedObject.h / 2, selectorSize)) {
+								selectedCorner = 128;
+								selectedModify = 2;
+							} else if (clickedPoint(selectedObject, 0, -selectedObject.h / 2 - selectorSize * 5 / 2 * (selectedObject.h > 0 ? 1 : -1), selectorSize)) {
+								selectedModify = 3;
+							} else if (clickedShape(selectedObject, 0)) {
+								selectedModify = 1;
+								if (modifyPoints == 0) modifyPoints = 1;
+							} else {
+								selectedModify = 0;
+								modifyPoints = 0;
+							}
+						}
+					}
+				}
+				if (modifyPoints == 3) modifyPoints = 4;
+				if (selectedModify == 0) {
+					selectedObject = null;
+					objects.forEach(object => {
+						if (clickedShape(object, selectorSize)) {
+							selectedObject = object;
+							selectedModify = 1;
+							modifyPoints = 0;
+						}
+					});
+					draw_shapes();
+					//if (selectedObject != null) mouse_down(event);
+				}
+			}
+			
+			function colorPickerInput(event) {
+				if (selectedFunction == 2 && selectedObject != null) {
+					selectedObject.stroke = document.getElementById("colorPicker").value;
+					draw_shape(selectedObject);
+				} else if (selectedFunction == 3 && selectedObject != null) {
+					selectedObject.fill = document.getElementById("colorPicker").value;
+					draw_shape(selectedObject);
+				} else if (selectedFunction == 4) {
+					displayObjects.forEach(object => {
+						object.stroke = document.getElementById("colorPicker").value;
+					});
+					draw_overlay();
+				} else if (selectedFunction == 5) {
+					displayObjects.forEach(object => {
+						object.fill = document.getElementById("colorPicker").value;
+					});
+					draw_overlay();
+				}
+				selectedFunction = 0;
+			}
+			
+			function mouse_up(event) {
+				mouseDown = false;
+				if (selectedObject != null) {
+					if (clickedShape(trash, selectorSize)) {
+						index = objects.indexOf(selectedObject);
+						if (index > -1) {
+							objects.splice(index, 1);
+							selectedObject = null;
+						}
+						selectedModify = 0;
+					} else {
+						if (modifyPoints == 4) {
+						} else if (clickedShape(selectedObject, selectorSize) && modifyPoints > 0 && selectedModify == 1 && dtx == 0 && dty == 0) {
+							modifyPoints = (modifyPoints == 1 ? 2 : 1);
+						} else {
+							selectedObject.tx += dtx;
+							selectedObject.ty += dty;
+							selectedObject.w += dw;
+							selectedObject.h += dh;
+							selectedObject.r += dr;
+							if (spdx != 0 || spdy != 0) {
+								selectedObject.points[selectedPoint][0] += spdx;
+								selectedObject.points[selectedPoint][1] += spdy;
+								fixPoints(selectedObject);
+							}
+						}
+						index = objects.indexOf(selectedObject);
+						if (index > -1) {
+							objects.splice(index, 1);
+							objects.push(selectedObject);
+						}
+					}
+				}
+				if (selectedModify != 5) selectedModify = 0;
+				selectedPoint = -1;
+				dtx = 0;
+				dty = 0;
+				dw = 0;
+				dh = 0;
+				dr = 0;
+				spdx = 0;
+				spdy = 0;
+				draw_shapes();
+			}
+			
+			function fixPoints(selectedObject) {
+				xmin = 0.5;
+				xmax = 0.5;
+				ymin = 0.5;
+				ymax = 0.5;
+				for (i = 0; i < selectedObject.points.length; i++) {
+					if (selectedObject.points[i][0] < xmin) xmin = selectedObject.points[i][0];
+					if (selectedObject.points[i][0] > xmax) xmax = selectedObject.points[i][0];
+					if (selectedObject.points[i][1] < ymin) ymin = selectedObject.points[i][1];
+					if (selectedObject.points[i][1] > ymax) ymax = selectedObject.points[i][1];
+				}
+				xrange = xmax - xmin;
+				yrange = ymax - ymin;
+				for (i = 0; i < selectedObject.points.length; i++) {
+					selectedObject.points[i][0] -= xmin;
+					selectedObject.points[i][0] /= xrange;
+					selectedObject.points[i][1] -= ymin;
+					selectedObject.points[i][1] /= yrange;
+				}
+				oldWidth = selectedObject.w;
+				oldHeight = selectedObject.h;
+				selectedObject.w *= xrange;
+				selectedObject.h *= yrange;
+				newdtx = (selectedObject.w - oldWidth) / 2 * (xmin == 0 ? 1 : -1)
+				newdty = (selectedObject.h - oldHeight) / 2 * (ymin == 0 ? 1 : -1)
+				selectedObject.tx += Math.cos(selectedObject.r) * newdtx - Math.sin(selectedObject.r) * newdty;
+				selectedObject.ty += Math.cos(selectedObject.r) * newdty + Math.sin(selectedObject.r) * newdtx;
+			}
+			
+			function mouse_move(event) {
+				bounds = document.getElementById("canvas").getBoundingClientRect();
+				x = event.clientX - bounds.left;
+				y = event.clientY - bounds.top;
+				if (mouseDown) {
+					dx = x - downX;
+					dy = y - downY;
+					if (!(new Date().getTime() - downTime > 100 || Math.hypot(dx, dy) > 10)) {
+						return;
+					}
+				} else {
+					dx = 0;
+					dy = 0;
+				}
+				if (selectedObject != null) {
+					if (selectedModify == 1) {
+						dtx = dx;
+						dty = dy;
+					} else if (selectedModify == 2) {
+						rot = selectedObject.r;
+						
+						dtx = 0;
+						dty = 0;
+						dh = 0;
+						dw = 0;
+						
+						newMethod = true;
+						if (newMethod) {
+							if ((selectedCorner & 66) != 0) {
+								if (Math.abs(Math.cos(rot)) > Math.PI / 4) dx = -Math.sin(rot) * dy / Math.cos(rot);
+								else dy = -Math.cos(rot) * dx / Math.sin(rot);
+							}
+							if ((selectedCorner & 24) != 0) {
+								if (Math.abs(Math.cos(rot)) > Math.PI / 4) dy = Math.sin(rot) * dx / Math.cos(rot);
+								else dx = Math.cos(rot) * dy / Math.sin(rot);
+							}
+							dtx = dx / 2;
+							dty = dy / 2;
+							dw = Math.cos(rot) * dx + Math.sin(rot) * dy;
+							dh = Math.cos(rot) * dy - Math.sin(rot) * dx;
+							if (selectedObject.t == "circle" || selectedObject.t == "square") {
+								if ((selectedCorner & 165) != 0) {
+									dwh = (Math.abs(dw) + Math.abs(dh)) / 2;
+									ddw = dwh * (dw < 0 ? -1 : 1);
+									ddh = dwh * (dh < 0 ? -1 : 1);
+									ddtx = (ddw - dw) / 2;
+									ddty = (ddh - dh) / 2;
+									dtx += Math.cos(rot) * ddtx - Math.sin(rot) * ddty;
+									dty += Math.cos(rot) * ddty + Math.sin(rot) * ddtx;
+									dw = ddw;
+									dh = ddh;
+								}
+							}
+							if ((selectedCorner & 41) != 0) dw *= -1;	// left
+							if ((selectedCorner & 7) != 0) dh *= -1;		// top
+							if ((selectedCorner & 66) != 0) dtx *= 1;	// top and bottom center
+							if ((selectedCorner & 24) != 0) dty *= 1;	// left and right middle
+							if (selectedObject.t == "circle" || selectedObject.t == "square") {
+								if ((selectedCorner & 66) != 0) dw = dh;
+								else if ((selectedCorner & 24) != 0) dh = dw;
+							}
+						} else {
+							// Works except TC ML MR BC when rotated
+							if ((selectedCorner & 189) != 0) {				// all but top and bottom center
+								dw = Math.cos(rot) * dx + Math.sin(rot) * dy;
+								dtx = dx / 2;
+							}
+							if ((selectedCorner & 231) != 0) {				// all but left and right middle
+								dh = Math.cos(rot) * dy - Math.sin(rot) * dx;
+								dty = dy / 2;
+							}
+							if ((selectedCorner & 41) != 0) dw *= -1;	// left
+							if ((selectedCorner & 7) != 0) dh *= -1;		// top
+							if ((selectedCorner & 66) != 0) dtx *= -1;	// top and bottom center
+							if ((selectedCorner & 24) != 0) dty *= -1;	// left and right middle
+						}						
+					} else if (selectedModify == 3) {
+						if (mouseDown) {
+							downr = Math.atan((selectedObject.ty - downY) / (selectedObject.tx - downX)) + (selectedObject.tx - downX < 0 ? Math.PI : 0);
+							newr = Math.atan((selectedObject.ty - y) / (selectedObject.tx - x)) + (selectedObject.tx - x < 0 ? Math.PI : 0);
+							dr = newr - downr;
+						}
+					} else if (selectedModify == 4) {
+						spdx = (Math.cos(selectedObject.r) * dx + Math.sin(selectedObject.r) * dy) / selectedObject.w;
+						spdy = (Math.cos(selectedObject.r) * dy - Math.sin(selectedObject.r) * dx) / selectedObject.h;
+					} else if (selectedModify == 5) {
+						selectedObject.points[selectedObject.points.length - 1] = [(x - selectedObject.tx + selectedObject.w / 2) / selectedObject.w, (y - selectedObject.ty + selectedObject.h / 2) / selectedObject.h];
+					}
+				}
+				mctx.clearRect(0, 0, 962, 542);
+				draw_shape(selectedObject);
+			}
+			
+			function draw_line(object) {
+				if (object != null && object.t == "line") {
+					if (selectedObject == object) {
+						if (object.stroke != "none") mctx.strokeStyle = object.stroke;
+						mctx.lineWidth = object.thickness;
+						mctx_transform(object);
+						mctx.beginPath();
+						mctx.moveTo(-(object.w + dw) / 2, -(object.h + dh) / 2);
+						mctx.lineTo((object.w + dw) / 2, (object.h + dh) / 2);
+						if (object.stroke != "none") mctx.stroke();
+						mctx_untransform(object);
+						draw_line_hitbox(object);
+					} else {
+						if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+						ctx.lineWidth = object.thickness;
+						ctx_transform(object);
+						ctx.beginPath();
+						ctx.moveTo(-object.w / 2, -object.h / 2);
+						ctx.lineTo(object.w / 2, object.h / 2);
+						if (object.stroke != "none") ctx.stroke();
+						ctx_untransform(object);
+					}
+				}
+			}
+			
+			function draw_triangle(object) {
+				if (object != null && object.t == "triangle") {
+					if (selectedObject == object) {
+						if (object.stroke != "none") mctx.strokeStyle = object.stroke;
+						if (object.fill != "none") mctx.fillStyle = object.fill;
+						mctx.lineWidth = object.thickness;
+						mctx_transform(object);
+						mctx.beginPath();
+						mctx.moveTo(-(object.w + dw) / 2, -(object.h + dh) / 2);
+						mctx.lineTo(-(object.w + dw) / 2, (object.h + dh) / 2);
+						mctx.lineTo((object.w + dw) / 2, (object.h + dh) / 2);
+						mctx.lineTo(-(object.w + dw) / 2, -(object.h + dh) / 2);
+						if (object.fill != "none") mctx.fill();
+						if (object.stroke != "none") mctx.stroke();
+						mctx_untransform(object);
+						draw_square_hitbox(object);
+					} else {
+						if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+						if (object.fill != "none") ctx.fillStyle = object.fill;
+						ctx.lineWidth = object.thickness;
+						ctx_transform(object);
+						ctx.beginPath();
+						ctx.moveTo(-object.w / 2, -object.h / 2);
+						ctx.lineTo(-object.w / 2, object.h / 2);
+						ctx.lineTo(object.w / 2, object.h / 2);
+						ctx.lineTo(-object.w / 2, -object.h / 2);
+						if (object.fill != "none") ctx.fill();
+						if (object.stroke != "none") ctx.stroke();
+						ctx_untransform(object);
+					}
+				}
+			}
+			
+			function draw_circle(object) {
+				if (object != null && (object.t == "ellipse" || object.t == "circle" || object.t == "thickness" || object.t == "stroke" || object.t == "fill")) {
+					if (selectedObject == object) {
+						if (object.stroke != "none") mctx.strokeStyle = object.stroke;
+						if (object.fill != "none") mctx.fillStyle = object.fill;
+						mctx.lineWidth = object.thickness;
+						mctx_transform(object);
+						mctx.beginPath();
+						mctx.ellipse(0, 0, object.w + dw > 0 ? Math.max(1, (object.w + dw) / 2) : -Math.min(-1, (object.w + dw) / 2),
+								object.h + dh > 0 ? Math.max(1, (object.h + dh) / 2) : -Math.min(-1, (object.h + dh) / 2), 0, 0, 2 * Math.PI);
+						if (object.fill != "none") mctx.fill();
+						if (object.stroke != "none") mctx.stroke();
+						mctx_untransform(object);
+						draw_square_hitbox(object);
+					} else {
+						if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+						if (object.fill != "none") ctx.fillStyle = object.fill;
+						ctx.lineWidth = object.thickness;
+						ctx_transform(object);
+						ctx.beginPath();
+						ctx.ellipse(0, 0, object.w > 0 ? Math.max(1, object.w / 2) : -Math.min(-1, object.w / 2), 
+								object.h > 0 ? Math.max(1, object.h / 2) : -Math.min(-1, object.h / 2), 0, 0, 2 * Math.PI);
+						if (object.fill != "none") ctx.fill();
+						if (object.stroke != "none") ctx.stroke();
+						ctx_untransform(object);
+					}
+				}
+			}
+			
+			function draw_rectangle(object) {
+				if (object != null && (object.t == "rectangle" || object.t == "square")) {
+					if (selectedObject == object) {
+						if (object.stroke != "none") mctx.strokeStyle = object.stroke;
+						if (object.fill != "none") mctx.fillStyle = object.fill;
+						mctx.lineWidth = object.thickness;
+						mctx_transform(object);
+						mctx.beginPath();
+						mctx.rect(-(object.w + dw) / 2, -(object.h + dh) / 2, object.w + dw, object.h + dh);
+						if (object.fill != "none") mctx.fill();
+						if (object.stroke != "none") mctx.stroke();
+						mctx_untransform(object);
+						draw_square_hitbox(object);
+					} else {
+						if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+						if (object.fill != "none") ctx.fillStyle = object.fill;
+						ctx.lineWidth = object.thickness;
+						ctx_transform(object);
+						ctx.beginPath();
+						ctx.rect(-object.w / 2, -object.h / 2, object.w, object.h);
+						if (object.fill != "none") ctx.fill();
+						if (object.stroke != "none") ctx.stroke();
+						ctx_untransform(object);
+					}
+				}
+			}
+			
+			function draw_polygon(object) {
+				if (object != null && (object.t == "polygon" || object.t == "square" || object.t == "rectangle" || object.t == "triangle")) {
+					if (object.points.length == 0) return;
+					if (selectedObject == object) {
+						if (object.stroke != "none") mctx.strokeStyle = object.stroke;
+						if (object.fill != "none") mctx.fillStyle = object.fill;
+						mctx.lineWidth = object.thickness;
+						mctx_transform(object);
+						mctx.beginPath();
+						mctx.moveTo((object.points[0][0] + (selectedPoint == 0 ? spdx : 0)) * (object.w + dw) - (object.w + dw) / 2, (object.points[0][1] + (selectedPoint == 0 ? spdy : 0)) * (object.h + dh) - (object.h + dh) / 2);
+						for (i = 0; i < object.points.length; i++) {
+							mctx.lineTo((object.points[i][0] + (selectedPoint == i ? spdx : 0)) * (object.w + dw) - (object.w + dw) / 2, (object.points[i][1] + (selectedPoint == i ? spdy : 0)) * (object.h + dh) - (object.h + dh) / 2);
+						}
+						mctx.lineTo((object.points[0][0] + (selectedPoint == 0 ? spdx : 0)) * (object.w + dw) - (object.w + dw) / 2, (object.points[0][1] + (selectedPoint == 0 ? spdy : 0)) * (object.h + dh) - (object.h + dh) / 2);
+						if (object.fill != "none") mctx.fill();
+						if (object.stroke != "none") mctx.stroke();
+						mctx_untransform(object);
+						draw_square_hitbox(object);
+					} else {
+						if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+						if (object.fill != "none") ctx.fillStyle = object.fill;
+						ctx.lineWidth = object.thickness;
+						ctx_transform(object);
+						ctx.beginPath();
+						ctx.moveTo(object.points[0][0] * object.w - object.w / 2, object.points[0][1] * object.h - object.h / 2);
+						for (i = 0; i < object.points.length; i++) {
+							ctx.lineTo(object.points[i][0] * object.w - object.w / 2, object.points[i][1] * object.h - object.h / 2);
+						}
+						ctx.lineTo(object.points[0][0] * object.w - object.w / 2, object.points[0][1] * object.h - object.h / 2);
+						if (object.fill != "none") ctx.fill();
+						if (object.stroke != "none") ctx.stroke();
+						ctx_untransform(object);
+					}
+				}
+			}
+			
+			function draw_polyline(object) {
+				if (object != null && object.t == "polyline") {
+					if (object.points.length == 0) return;
+					if (selectedObject == object) {
+						if (object.stroke != "none") mctx.strokeStyle = object.stroke;
+						mctx.lineWidth = object.thickness;
+						mctx_transform(object);
+						mctx.beginPath();
+						mctx.moveTo((object.points[0][0] + (selectedPoint == 0 ? spdx : 0)) * (object.w + dw) - (object.w + dw) / 2, (object.points[0][1] + (selectedPoint == 0 ? spdy : 0)) * (object.h + dh) - (object.h + dh) / 2);
+						for (i = 0; i < object.points.length; i++) {
+							mctx.lineTo((object.points[i][0] + (selectedPoint == i ? spdx : 0)) * (object.w + dw) - (object.w + dw) / 2, (object.points[i][1] + (selectedPoint == i ? spdy : 0)) * (object.h + dh) - (object.h + dh) / 2);
+						}
+						if (object.stroke != "none") mctx.stroke();
+						mctx_untransform(object);
+						draw_square_hitbox(object);
+					} else {
+						if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+						ctx.lineWidth = object.thickness;
+						ctx_transform(object);
+						ctx.beginPath();
+						ctx.moveTo(object.points[0][0] * object.w - object.w / 2, object.points[0][1] * object.h - object.h / 2);
+						for (i = 0; i < object.points.length; i++) {
+							ctx.lineTo(object.points[i][0] * object.w - object.w / 2, object.points[i][1] * object.h - object.h / 2);
+						}
+						if (object.stroke != "none") ctx.stroke();
+						ctx_untransform(object);
+					}
+				}
+			}
+			
+			function draw_curve(object) {
+				if (object != null && object.t == "curve") {
+					if (object.points.length == 0) return;
+					if (object.points.length < 3) {
+						object.t = "line";
+						draw_line(object);
+						object.t = "curve";
+						return;
+					}
+					if (selectedObject == object) {
+						if (object.stroke != "none") mctx.strokeStyle = object.stroke;
+						mctx.lineWidth = object.thickness;
+						mctx_transform(object);
+						mctx.beginPath();
+						mctx.moveTo((object.points[0][0] + (selectedPoint == 0 ? spdx : 0)) * (object.w + dw) - (object.w + dw) / 2, (object.points[0][1] + (selectedPoint == 0 ? spdy : 0)) * (object.h + dh) - (object.h + dh) / 2);
+						mctx.quadraticCurveTo(((object.points[1][0] + (selectedPoint == 1 ? spdx : 0)) * object.w - object.w / 2) * 2, ((object.points[1][1] + (selectedPoint == 1 ? spdy : 0)) * object.h - object.h / 2) * 2, (object.points[2][0] + (selectedPoint == 2 ? spdx : 0)) * object.w - object.w / 2, (object.points[2][1] + (selectedPoint == 2 ? spdy : 0)) * object.h - object.h / 2);
+						if (object.stroke != "none") mctx.stroke();
+						mctx_untransform(object);
+						draw_square_hitbox(object);
+					} else {
+						if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+						ctx.lineWidth = object.thickness;
+						ctx_transform(object);
+						ctx.beginPath();
+						ctx.moveTo(object.points[0][0] * object.w - object.w / 2, object.points[0][1] * object.h - object.h / 2);
+						ctx.quadraticCurveTo((object.points[1][0] * object.w - object.w / 2) * 2, (object.points[1][1] * object.h - object.h / 2) * 2, object.points[2][0] * object.w - object.w / 2, object.points[2][1] * object.h - object.h / 2);
+						if (object.stroke != "none") ctx.stroke();
+						ctx_untransform(object);
+					}
+				}
+			}
+			
+			function draw_square_hitbox(shape) {
+				mctx.strokeStyle = "gray";
+				mctx.fillStyle = "gray";
+				mctx.lineWidth = 1;
+				mctx_transform(shape);
+				if ((modifyPoints != 2 && modifyPoints != 4) || shape.points.length == 0) {
+					mctx.strokeRect(-(shape.w + dw) / 2, -(shape.h + dh) / 2, shape.w + dw, shape.h + dh);
+					mctx.fillRect(-(shape.w + dw) / 2 - selectorSize / 2, -(shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+					mctx.fillRect(-selectorSize / 2, -(shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+					mctx.fillRect((shape.w + dw) / 2 - selectorSize / 2, -(shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+					mctx.fillRect(-(shape.w + dw) / 2 - selectorSize / 2, -selectorSize / 2, selectorSize, selectorSize);
+					mctx.fillRect((shape.w + dw) / 2 - selectorSize / 2, -selectorSize / 2, selectorSize, selectorSize);
+					mctx.fillRect(-(shape.w + dw) / 2 - selectorSize / 2, (shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+					mctx.fillRect(-selectorSize / 2, (shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+					mctx.fillRect((shape.w + dw) / 2 - selectorSize / 2, (shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+					if (shape.h + dh > 0) {
+						mctx.beginPath();
+						mctx.moveTo(0, -(shape.h + dh) / 2 - selectorSize / 2);
+						mctx.lineTo(0, -(shape.h + dh) / 2 - selectorSize * 5 / 2);
+						mctx.stroke();
+						mctx.beginPath();
+						mctx.ellipse(0, -(shape.h + dh) / 2 - selectorSize * 5 / 2, selectorSize / 2, selectorSize / 2, 0, 0, 2 * Math.PI);
+						mctx.fill();
+					} else {
+						mctx.beginPath();
+						mctx.moveTo(0, -(shape.h + dh) / 2 - selectorSize / 2);
+						mctx.lineTo(0, -(shape.h + dh) / 2 + selectorSize * 5 / 2);
+						mctx.stroke();
+						mctx.beginPath();
+						mctx.ellipse(0, -(shape.h + dh) / 2 + selectorSize * 5 / 2, selectorSize / 2, selectorSize / 2, 0, 0, 2 * Math.PI);
+						mctx.fill();
+					}
+				} else {
+					for (i = 0; i < shape.points.length; i++) {
+						mctx.beginPath();
+						mctx.ellipse((shape.points[i][0] + (selectedPoint == i ? spdx : 0)) * (shape.w + dw) - (shape.w + dw) / 2, (shape.points[i][1] + (selectedPoint == i ? spdy : 0)) * (shape.h + dh) - (shape.h + dh) / 2, selectorSize / 2, selectorSize / 2, 0, 0, 2 * Math.PI);
+						mctx.fill();
+					}
+				}
+				mctx_untransform(shape);
+			}
+			
+			function draw_line_hitbox(shape) {
+				mctx.strokeStyle = "gray";
+				mctx.fillStyle = "gray";
+				mctx.lineWidth = 1;
+				mctx_transform(shape);
+				mctx.fillRect(-(shape.w + dw) / 2 - selectorSize / 2, -(shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+				mctx.fillRect((shape.w + dw) / 2 - selectorSize / 2, (shape.h + dh) / 2 - selectorSize / 2, selectorSize, selectorSize);
+				mctx_untransform(shape);
+			}
+			
+			function draw_shape(object) {
+				draw_line(object);
+				draw_circle(object);
+				draw_curve(object);
+				draw_polyline(object);
+				draw_polygon(object);
+			}
+			
+			function draw_functionObject(object) {
+				draw_editthickness(object);
+				draw_editstroke(object);
+				draw_editfill(object);
+				draw_import(object);
+				draw_download(object);
+				draw_export(object);
+				draw_trash(object);
+			}
+			
+			function draw_editthickness(object) {
+				draw_circle(object);
+			}
+			
+			function draw_editstroke(object) {
+				draw_circle(object);
+			}
+			
+			function draw_editfill(object) {
+				draw_circle(object);
+			}
+			
+			function draw_import(object) {
+				if (object != null && object.t == "import") {
+					if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+					if (object.fill != "none") ctx.fillStyle = object.fill;
+					ctx.lineWidth = object.thickness;
+					ctx_transform(object);
+					ctx.beginPath();
+					ctx.rect(-object.w / 3, -object.h / 3, object.w * 2 / 3, object.h * 2 / 3);
+					ctx.moveTo(0, -object.h / 2);
+					ctx.lineTo(0, -object.h / 6);
+					ctx.moveTo(-object.w / 8, -object.h / 4);
+					ctx.lineTo(0, -object.h / 6);
+					ctx.lineTo(object.w / 8, -object.h / 4);
+					if (object.fill != "none") ctx.fill();
+					if (object.stroke != "none") ctx.stroke();
+					ctx_untransform(object);
+				}
+			}
+			
+			function draw_download(object) {
+				if (object != null && object.t == "download") {
+					if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+					if (object.fill != "none") ctx.fillStyle = object.fill;
+					ctx.lineWidth = object.thickness;
+					ctx_transform(object);
+					ctx.beginPath();
+					ctx.rect(-object.w / 3, -object.h / 3, object.w * 2 / 3, object.h * 2 / 3);
+					ctx.moveTo(0, object.h / 2);
+					ctx.lineTo(0, object.h / 6);
+					ctx.moveTo(-object.w / 8, object.h * 5 / 12);
+					ctx.lineTo(0, object.h / 2);
+					ctx.lineTo(object.w / 8, object.h * 5 / 12);
+					if (object.fill != "none") ctx.fill();
+					if (object.stroke != "none") ctx.stroke();
+					ctx_untransform(object);
+				}
+			}
+			
+			function draw_save(object) {
+				if (object != null && object.t == "save") {
+					if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+					if (object.fill != "none") ctx.fillStyle = object.fill;
+					ctx.lineWidth = object.thickness;
+					ctx_transform(object);
+					ctx.beginPath();
+					ctx.rect(-object.w / 3, -object.h / 3, object.w * 2 / 3, object.h * 2 / 3);
+					ctx.moveTo(-object.w / 2, 0);
+					ctx.lineTo(-object.w / 6, 0);
+					ctx.moveTo(-object.w / 4, -object.h / 8);
+					ctx.lineTo(-object.w / 6, 0);
+					ctx.lineTo(-object.w / 4, object.h / 8);
+					if (object.fill != "none") ctx.fill();
+					if (object.stroke != "none") ctx.stroke();
+					ctx_untransform(object);
+				}
+			}
+			
+			function draw_saveas(object) {
+				if (object != null && object.t == "saveas") {
+					if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+					if (object.fill != "none") ctx.fillStyle = object.fill;
+					ctx.lineWidth = object.thickness;
+					ctx_transform(object);
+					ctx.beginPath();
+					ctx.rect(-object.w / 3, -object.h / 3, object.w * 2 / 3, object.h * 2 / 3);
+					ctx.moveTo(-object.w / 2, 0);
+					ctx.lineTo(-object.w / 6, 0);
+					ctx.moveTo(-object.w / 4, -object.h / 8);
+					ctx.lineTo(-object.w / 6, 0);
+					ctx.lineTo(-object.w / 4, object.h / 8);
+					ctx.moveTo(-object.w / 12 + 2, 0);
+					ctx.ellipse(-object.w / 12 + 2, 0, 1, 1, 0, 0, 2 * Math.PI);
+					ctx.moveTo(object.w / 12, 0);
+					ctx.ellipse(object.w / 12, 0, 1, 1, 0, 0, 2 * Math.PI);
+					ctx.moveTo(object.w / 4 - 2, 0);
+					ctx.ellipse(object.w / 4 - 2, 0, 1, 1, 0, 0, 2 * Math.PI);
+					if (object.fill != "none") ctx.fill();
+					if (object.stroke != "none") ctx.stroke();
+					ctx_untransform(object);
+				}
+			}
+			
+			function draw_export(object) {
+				if (object != null && object.t == "export") {
+					if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+					if (object.fill != "none") ctx.fillStyle = object.fill;
+					ctx.lineWidth = object.thickness;
+					ctx_transform(object);
+					ctx.beginPath();
+					ctx.rect(-object.w / 3, -object.h / 3, object.w * 2 / 3, object.h * 2 / 3);
+					ctx.moveTo(0, -object.h / 2);
+					ctx.lineTo(0, -object.h / 6);
+					ctx.moveTo(-object.w / 8, -object.h * 5 / 12);
+					ctx.lineTo(0, -object.h / 2);
+					ctx.lineTo(object.w / 8, -object.h * 5 / 12);
+					if (object.fill != "none") ctx.fill();
+					if (object.stroke != "none") ctx.stroke();
+					ctx_untransform(object);
+				}
+			}
+			
+			function draw_trash(object) {
+				if (object != null && object.t == "trash") {
+					if (object.stroke != "none") ctx.strokeStyle = object.stroke;
+					if (object.fill != "none") ctx.fillStyle = object.fill;
+					ctx.lineWidth = object.thickness;
+					ctx_transform(object);
+					ctx.beginPath();
+					ctx.moveTo(-object.w / 3, -object.h / 3);
+					ctx.lineTo(-object.w / 3, object.h / 3);
+					ctx.lineTo(object.w / 3, object.h / 3);
+					ctx.lineTo(object.w / 3, -object.h / 3);
+					ctx.moveTo(-object.w * 5 / 12, -object.h * 5 / 12);
+					ctx.lineTo(object.w * 5 / 12, -object.h * 5 / 12);
+					ctx.moveTo(-object.w / 8, -object.h * 5 / 12);
+					ctx.lineTo(-object.w / 8, -object.h / 2);
+					ctx.lineTo(object.w / 8, -object.h / 2);
+					ctx.lineTo(object.w / 8, -object.h * 5 / 12);
+					ctx.moveTo(-object.w / 8, -object.h / 4);
+					ctx.lineTo(-object.w / 8, object.h / 6);
+					ctx.moveTo(object.w / 8, -object.h / 4);
+					ctx.lineTo(object.w / 8, object.h / 6);
+					if (object.fill != "none") ctx.fill();
+					if (object.stroke != "none") ctx.stroke();
+					ctx_untransform(object);
+				}
+			}
+			
+			function draw_shapes() {
+				ctx.clearRect(0, 0, 962, 542);
+				mctx.clearRect(0, 0, 962, 542);
+				objects.forEach(object => {
+					draw_shape(object);
+				});
+			}
+			
+			function mctx_transform(shape) {
+				mctx.translate(shape.tx + dtx , shape.ty + dty);
+				mctx.rotate(shape.r + dr);
+			}
+			
+			function mctx_untransform(shape) {
+				mctx.rotate(-(shape.r + dr));
+				mctx.translate(-(shape.tx + dtx), -(shape.ty + dty));
+			}
+			
+			function ctx_transform(shape) {
+				ctx.translate(shape.tx, shape.ty);
+				ctx.rotate(shape.r);
+			}
+			
+			function ctx_untransform(shape) {
+				ctx.rotate(-shape.r);
+				ctx.translate(-shape.tx, -shape.ty);
+			}
+			
+			function clickedPoint(shape, x, y, d) {
+				newX = shape.tx + (downX - shape.tx) * Math.cos(-shape.r) - (downY - shape.ty) * Math.sin(-shape.r);
+				newY = shape.ty + (downY - shape.ty) * Math.cos(-shape.r) + (downX - shape.tx) * Math.sin(-shape.r);
+				return d > Math.hypot(newY - (y + shape.ty), newX - (x + shape.tx));
+			}
+			
+			function clickedShape(shape, buffer) {
+				if (shape.t == "circle") return clickedPoint(shape, 0, 0, shape.w / 2 + 1);
+				newX = shape.tx + (downX + dx - shape.tx) * Math.cos(-shape.r) - (downY + dy - shape.ty) * Math.sin(-shape.r);
+				newY = shape.ty + (downY + dy - shape.ty) * Math.cos(-shape.r) + (downX + dx - shape.tx) * Math.sin(-shape.r);
+				return (shape.w > 0 ? 
+					(newX > shape.tx - shape.w / 2 - buffer) &&
+					(newX < shape.tx + shape.w / 2 + buffer) :
+					(newX < shape.tx - shape.w / 2 - buffer) &&
+					(newX > shape.tx + shape.w / 2 + buffer)) &&
+					(shape.h > 0 ?
+					(newY > shape.ty - shape.h / 2 - buffer) &&
+					(newY < shape.ty + shape.h / 2 + buffer) :
+					(newY < shape.ty - shape.h / 2 - buffer) &&
+					(newY > shape.ty + shape.h / 2 + buffer)) &&
+					(shape.t == "triangle" ? newX - shape.tx < newY - shape.ty : true);
+			}
+			
+			function downloadFile() {
+				file = {"thickness":displayObjects[0].thickness, "stroke":displayObjects[0].stroke, "fill":displayObjects[0].fill, "objects":[]};
+				file.objects = objects;
+				var element = document.createElement('a');
+				element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(file)));
+				element.setAttribute("download", "becksComputerGraphicsProject.bcgp");
+				element.style.display = "none";
+				document.body.appendChild(element);
+				element.click();
+				document.body.removeChild(element);
+			}
+			
+			function importFile() {
+				document.getElementById("openFile").click();
+				selectedObject = null;
+			}
+			
+			function exportFile() {
+			
+			}
+			
+			function draw_overlay() {
+				ctx = document.getElementById("overlay").getContext("2d");
+				ctx.fillStyle = "white";
+				ctx.fillRect(0, 0, 60, 540);
+				ctx.fillRect(900, 0, 60, 540);
+				displayObjects.forEach(object => {
+					draw_shape(object);
+				});
+				if (selectedDisplay != -1) {
+					mctx = document.getElementById("overlay").getContext("2d");
+					oldModifyPoints = modifyPoints;
+					oldSelectorSize = selectorSize;
+					modifyPoints = 2;
+					selectorSize = 6;
+					draw_square_hitbox(displayObjects[selectedDisplay]);
+					modifyPoints = oldModifyPoints;
+					selectorSize = oldSelectorSize;
+					mctx = document.getElementById("mask").getContext("2d");
+				}
+				functionObjects.forEach(object => {
+					draw_functionObject(object);
+				});
+				
+				ctx.strokeStyle = "black";
+				ctx.strokeRect(1, 1, 960, 540);
+				ctx.strokeRect(1, 1, 60, 60);
+				ctx.strokeRect(1, 61, 60, 60);
+				ctx.strokeRect(1, 121, 60, 60);
+				ctx.strokeRect(1, 181, 60, 60);
+				ctx.strokeRect(1, 241, 60, 60);
+				ctx.strokeRect(1, 301, 60, 60);
+				ctx.strokeRect(1, 361, 60, 60);
+				ctx.strokeRect(1, 421, 60, 60);
+				ctx.strokeRect(1, 481, 60, 60);
+				ctx.strokeRect(901, 1, 60, 60);
+				ctx.strokeRect(901, 61, 60, 60);
+				ctx.strokeRect(901, 121, 60, 60);
+				ctx.strokeRect(901, 181, 60, 60);
+				ctx.strokeRect(901, 241, 60, 60);
+				ctx.strokeRect(901, 301, 60, 60);
+				ctx.strokeRect(901, 361, 60, 60);
+				ctx.strokeRect(901, 421, 60, 60);
+				ctx.strokeRect(901, 481, 60, 60);
+				ctx.strokeRect(0, 0, 962, 542);
+				ctx = document.getElementById("canvas").getContext("2d");
+			}
+		</script>
+	</body>
+</html>
+
