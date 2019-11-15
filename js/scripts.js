@@ -64,19 +64,19 @@ function generateMultiplicationTable() {
     
     warning.innerHTML = "";
     if (isNaN(topFrom)) {
-        warning.innerHTML += "Top From, ";
+        warning.innerHTML += "Top From '" + document.getElementById("topFrom").value + "', ";
         invalidInput = true;
     }
     if (isNaN(topTo)) {
-        warning.innerHTML += "Top To, ";
+        warning.innerHTML += "Top To '" + document.getElementById("topTo").value + "', ";
         invalidInput = true;
     }
     if (isNaN(sideFrom)) {
-        warning.innerHTML += "Side From, ";
+        warning.innerHTML += "Side From '" + document.getElementById("sideFrom").value + "', ";
         invalidInput = true;
     }
     if (isNaN(sideTo)) {
-        warning.innerHTML += "Side To, ";
+        warning.innerHTML += "Side To '" + document.getElementById("sideTo").value + "', ";
         invalidInput = true;
     }
     if (invalidInput) {
