@@ -1,0 +1,130 @@
+<!-- Copyright (CC BY-NC) 2019 by Beck A. Peterson. -->
+<!-- Beck A. Peterson -->
+<!-- beck_peterson@student.uml.edu -->
+<!-- I am affiliated as a student at UMass Lowell in course 91.61 GUI Programming I -->
+<!-- File created on 9/13/19 -->
+<!-- This is a test file to test scrolling and linking for my navigation -->
+
+<!-- For comments about the external html and structure of the page, read the comments in index.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <base href="http://cs.uml.edu/~bpeterso/">
+        <meta charset="utf-8">
+        <title>Beck Peterson Undergrad Portfolio</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="js/scripts.js"></script>
+        
+    </head>
+    <body>
+        <div class="external-html" id="base.html"></div>
+        
+        <div class="contents">
+            <div class="separator">
+                <h3>Enter Range</h3>
+            </div>
+            <div class="padded">
+                <table>
+                    <td>
+                        <table class="multiplicationTable">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="dark">From</td>
+                                <td class="dark">To</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="light">
+                                    <form><input type="text" id="topFrom" value="3"></form>
+                                </td>
+                                <td class="light">
+                                    <form><input type="text" id="topTo" value="6"></form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="dark">From</td>
+                                <td class="light">
+                                    <form><input type="text" id="sideFrom" value="-2"></form>
+                                </td>
+                                <td class="light"></td>
+                                <td class="light"></td>
+                            </tr>
+                            <tr>
+                                <td class="dark">To</td>
+                                <td class="light">
+                                    <form><input type="text" id="sideTo" value="3"></form>
+                                </td>
+                                <td class="light"></td>
+                                <td class="light"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <button onclick="generateMultiplicationTable();" style="margin-left: 10px;">Generate</button>
+                    </td>
+                </table>
+            </div>
+            <div class="separator">
+                <h3>Multiplication Table</h3>
+            </div>
+            <div class="padded">
+                <table class="multiplicationTable" id="generatedTable">
+                    <tr>
+                        <td></td>
+                        <td class="dark">3</td>
+                        <td class="dark">4</td>
+                        <td class="dark">5</td>
+                        <td class="dark">6</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">-2</td>
+                        <td class="light">-6</td>
+                        <td class="light">-8</td>
+                        <td class="light">-10</td>
+                        <td class="light">-12</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">-1</td>
+                        <td class="light">-3</td>
+                        <td class="light">-4</td>
+                        <td class="light">-5</td>
+                        <td class="light">-6</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">0</td>
+                        <td class="light">0</td>
+                        <td class="light">0</td>
+                        <td class="light">0</td>
+                        <td class="light">0</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">1</td>
+                        <td class="light">3</td>
+                        <td class="light">4</td>
+                        <td class="light">5</td>
+                        <td class="light">6</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">2</td>
+                        <td class="light">6</td>
+                        <td class="light">8</td>
+                        <td class="light">10</td>
+                        <td class="light">12</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">3</td>
+                        <td class="light">9</td>
+                        <td class="light">12</td>
+                        <td class="light">15</td>
+                        <td class="light">18</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <script>loadHTML();</script>
+    </body>
+</html>

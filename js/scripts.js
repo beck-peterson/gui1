@@ -52,3 +52,29 @@ function selectCurrentTab() {
         }
     }
 }
+
+function generateMultiplicationTable() {
+    var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents;
+    elmnt = document.getElementById("generatedTable");
+    topFrom = parseInt(document.getElementById("topFrom").value);
+    topTo = parseInt(document.getElementById("topTo").value);
+    sideFrom = parseInt(document.getElementById("sideFrom").value);
+    sideTo = parseInt(document.getElementById("sideTo").value);
+    
+    topInc = topTo > topFrom ? 1 : -1;
+    sideInc = sideTo > sideFrom ? 1 : -1;
+    tableContents = "<tr><td></td>";    
+    for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
+        tableContents += "<td class=\"dark\">" + x + "</td>";
+    }
+    tableContents += "</tr>";
+    for (y = sideFrom; sideTo > sideFrom ? y <= sideTo : y >= sideTo; y += sideInc) {
+        tableContents += "<tr>";
+        tableContents += "<td class=\"dark\">" + y + "</td>";
+        for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
+            tableContents += "<td class=\"light\">" + (x * y) + "</td>";
+        }
+        tableContents += "</tr>";
+    }
+    elmnt.innerHTML = tableContents;
+}

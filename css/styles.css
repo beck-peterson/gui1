@@ -100,6 +100,11 @@ div.border {
     padding-right: 10px;
 }
 
+button {
+    border-color: var(--blue15);
+    outline: 0;
+}
+
 /********************************************/
 /* navigation was assisted by w3schools.com */
 /********************************************/
@@ -121,7 +126,7 @@ ul.navigation li a.selected {
     color: var(--blue);
 }
 
-ul.navigation li a {
+ul.navigation li a, button {
     display: block;
     color: var(--blue1);
     text-align: center;
@@ -131,7 +136,7 @@ ul.navigation li a {
     border-radius: 5px;
 }
 
-ul.navigation li a:hover {
+ul.navigation li a:hover, button:hover {
     transition: background 0.075s ease;
     background: var(--dark-blue);
 }
@@ -157,4 +162,33 @@ div.dropdown a {
 
 ul.navigation li:hover div.dropdown {
     display: block;
+}
+
+/*********/
+/* table */
+/*********/
+
+.padded table {
+    border-collapse: collapse;
+}
+
+table.multiplicationTable td {
+    padding: 2px;
+    width: 104px;
+}
+
+table.multiplicationTable td form input {
+    width: 100px;
+}
+
+table.multiplicationTable td.dark {
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+}
+
+table.multiplicationTable td.light {
+    border: 1px solid black;
+    background-color: white;
+    color: black;
 }
