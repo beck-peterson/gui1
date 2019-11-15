@@ -105,6 +105,10 @@ button {
     outline: 0;
 }
 
+#warning {
+    color: red;
+}
+
 /********************************************/
 /* navigation was assisted by w3schools.com */
 /********************************************/

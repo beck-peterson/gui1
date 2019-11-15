@@ -54,13 +54,36 @@ function selectCurrentTab() {
 }
 
 function generateMultiplicationTable() {
-    var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents;
+    var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents, warning, invalidInput = false;
     elmnt = document.getElementById("generatedTable");
+    warning = document.getElementById("warning");
     topFrom = parseInt(document.getElementById("topFrom").value);
     topTo = parseInt(document.getElementById("topTo").value);
     sideFrom = parseInt(document.getElementById("sideFrom").value);
     sideTo = parseInt(document.getElementById("sideTo").value);
     
+    warning.innerHTML = "";
+    if (isNaN(topFrom)) {
+        warning.innerHTML += "Top From, ";
+        invalidInput = true;
+    }
+    if (isNaN(topTo)) {
+        warning.innerHTML += "Top To, ";
+        invalidInput = true;
+    }
+    if (isNaN(sideFrom)) {
+        warning.innerHTML += "Side From, ";
+        invalidInput = true;
+    }
+    if (isNaN(sideTo)) {
+        warning.innerHTML += "Side To, ";
+        invalidInput = true;
+    }
+    if (invalidInput) {
+        warning.innerHTML += "is invalid";
+        return;
+    }
+
     topInc = topTo > topFrom ? 1 : -1;
     sideInc = sideTo > sideFrom ? 1 : -1;
     tableContents = "<tr><td></td>";    
