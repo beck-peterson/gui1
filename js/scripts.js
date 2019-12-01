@@ -6,16 +6,6 @@
 /* This file defines my function that loads one html file into another to decrease complexity of the files and prevent unnessisary copying of code.
    It also contains a prototype function that will display the currently selected tab in the navigation */
 
-/* This function was assisted by Daniel Moura and Tom Dee from https://stackoverflow.com/questions/1140402/how-to-add-jquery-in-js-file/36343063 */
-/*function enableJquery() {
-    var script = document.createElement("script");
-    script.src = "https://code.jquery.com/jquery-3.4.1.min.js";
-    script.type = "text/javascript";
-    document.getElementsByTagName("head")[0].insertBefore(script, document.getElementsByTagName("script")[0]);
-}
-enableJquery();
-*/
-
 /* This function was assisted by w3schools */
 function loadHTML() {
     var z, i, elmnt, file, xhttp;
@@ -47,7 +37,6 @@ function loadHTML() {
         }
     }
 }
-loadHTML();
 
 function selectCurrentTab() {
     var z, i, elmnt;
