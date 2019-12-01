@@ -9,7 +9,7 @@ $(document).ready(function () {
         return boolValid;
     }
 
-    $("#topFrom").keyPress(function () {
+    $("#topFrom").keypress(function () {
         if (validateInput("Top From entry", $("#topFrom").val())) {
             alert("valid");
         } else {
