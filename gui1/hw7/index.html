@@ -1,4 +1,4 @@
-<!-- Copyright (CC BY-NC) 2019 by Beck A. Peterson. -->
+﻿<!-- Copyright (CC BY-NC) 2019 by Beck A. Peterson. -->
 <!-- Beck A. Peterson -->
 <!-- beck_peterson@student.uml.edu -->
 <!-- I am affiliated as a student at UMass Lowell in course 91.61 GUI Programming I -->
@@ -26,48 +26,50 @@
             </div>
             <div class="padded">
                 <table>
-                    <td>
-                        <table class="multiplicationTable">
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td class="dark">From</td>
-                                <td class="dark">To</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td class="light">
-                                    <form><input type="text" id="topFrom" value="3"></form>
-                                </td>
-                                <td class="light">
-                                    <form><input type="text" id="topTo" value="6"></form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="dark">From</td>
-                                <td class="light">
-                                    <form><input type="text" id="sideFrom" value="-2"></form>
-                                </td>
-                                <td class="light"></td>
-                                <td class="light"></td>
-                            </tr>
-                            <tr>
-                                <td class="dark">To</td>
-                                <td class="light">
-                                    <form><input type="text" id="sideTo" value="3"></form>
-                                </td>
-                                <td class="light"></td>
-                                <td class="light"></td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <button onclick="generateMultiplicationTable();" style="margin-left: 10px;">Generate</button>
-                    </td>
-                    <td>
-                        <div id="warning" style="margin-left: 10px;"></div>
-                    </td>
+                    <tr>
+                        <td>
+                            <table class="multiplicationTable">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="dark">From</td>
+                                    <td class="dark">To</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="light">
+                                        <form><input type="text" id="topFrom" value="3"></form>
+                                    </td>
+                                    <td class="light">
+                                        <form><input type="text" id="topTo" value="6"></form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="dark">From</td>
+                                    <td class="light">
+                                        <form><input type="text" id="sideFrom" value="-2"></form>
+                                    </td>
+                                    <td class="light"></td>
+                                    <td class="light"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dark">To</td>
+                                    <td class="light">
+                                        <form><input type="text" id="sideTo" value="3"></form>
+                                    </td>
+                                    <td class="light"></td>
+                                    <td class="light"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <button onclick="generateMultiplicationTable();" style="margin-left: 10px;">Generate</button>
+                        </td>
+                        <td>
+                            <div id="warning" style="margin-left: 10px;"></div>
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div class="separator">
