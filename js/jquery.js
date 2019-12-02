@@ -7,13 +7,13 @@
 $(document).ready(function () {
 
     function validateInput(input) {
-        if (input == "") return "<empty>";
+        if (input === "") return "<empty>";
         return input.replace(/^-?\d+$/gi, "");
     }
 
     $("#topFrom").keyup(function () {
         var invalidPart = validateInput($("#topFrom").val());
-        if (invalidPart.isEmpty()) {
+        if (invalidPart === "") {
             $("#topFromWarning").text("");
             $("#topFrom").removeClass("warning");
         } else {
@@ -24,7 +24,7 @@ $(document).ready(function () {
 
     $("#topTo").keyup(function () {
         var invalidPart = validateInput($("#topTo").val());
-        if (invalidPart.isEmpty()) {
+        if (invalidPart === "") {
             $("#topToWarning").text("");
             $("#topTo").removeClass("warning");
         } else {
@@ -35,7 +35,7 @@ $(document).ready(function () {
 
     $("#sideFrom").keyup(function () {
         var invalidPart = validateInput($("#sideFrom").val());
-        if (invalidPart.isEmpty()) {
+        if (invalidPart === "") {
             $("#sideFromWarning").text("");
             $("#sideFrom").removeClass("warning");
         } else {
@@ -46,7 +46,7 @@ $(document).ready(function () {
 
     $("#sideTo").keyup(function () {
         var invalidPart = validateInput($("#sideTo").val());
-        if (invalidPart.isEmpty()) {
+        if (invalidPart === "") {
             $("#sideToWarning").text("");
             $("#sideTo").removeClass("warning");
         } else {
