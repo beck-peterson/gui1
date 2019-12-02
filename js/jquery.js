@@ -7,33 +7,33 @@ $(document).ready(function () {
 
     $("#topFrom").keyup(function () {
         if (validateInput($("#topFrom").val())) {
-            $(".topFromWarning").text("");
+            $("#topFromWarning").text("");
         } else {
-            $(".topFromWarning").text("Top From input is invalid, please enter a valid number");
+            $("#topFromWarning").text("Top From input is invalid, please enter a valid number");
         }
     });
 
     $("#topTo").keyup(function () {
         if (validateInput($("#topTo").val())) {
-            $(".topToWarning").text("");
+            $("#topToWarning").text("");
         } else {
-            $(".topToWarning").text("Top To input is invalid, please enter a valid number");
+            $("#topToWarning").text("Top To input is invalid, please enter a valid number");
         }
     });
 
     $("#sideFrom").keyup(function () {
         if (validateInput($("#sideFrom").val())) {
-            $(".sideFromWarning").text("");
+            $("#sideFromWarning").text("");
         } else {
-            $(".sideFromWarning").text("Side From input is invalid, please enter a valid number");
+            $("#sideFromWarning").text("Side From input is invalid, please enter a valid number");
         }
     });
 
     $("#sideTo").keyup(function () {
         if (validateInput($("#sideTo").val())) {
-            $(".sideToWarning").text("");
+            $("#sideToWarning").text("");
         } else {
-            $(".sideToWarning").text("Side To input is invalid, please enter a valid number");
+            $("#sideToWarning").text("Side To input is invalid, please enter a valid number");
         }
     });
 });
