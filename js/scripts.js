@@ -62,25 +62,7 @@ function generateMultiplicationTable() {
     sideFrom = parseInt(document.getElementById("sideFrom").value);
     sideTo = parseInt(document.getElementById("sideTo").value);
 
-    warning.innerHTML = "";
-    if (isNaN(topFrom)) {
-        warning.innerHTML += "Top From '" + document.getElementById("topFrom").value + "', ";
-        invalidInput = true;
-    }
-    if (isNaN(topTo)) {
-        warning.innerHTML += "Top To '" + document.getElementById("topTo").value + "', ";
-        invalidInput = true;
-    }
-    if (isNaN(sideFrom)) {
-        warning.innerHTML += "Side From '" + document.getElementById("sideFrom").value + "', ";
-        invalidInput = true;
-    }
-    if (isNaN(sideTo)) {
-        warning.innerHTML += "Side To '" + document.getElementById("sideTo").value + "', ";
-        invalidInput = true;
-    }
-    if (invalidInput) {
-        warning.innerHTML += "is invalid";
+    if (isNaN(topFrom) || isNaN(topTo) || isNaN(sideFrom) || isNaN(sideTo)) {
         return;
     }
 
