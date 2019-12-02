@@ -6,22 +6,30 @@
 
 $(document).ready(function () {
 
+    /*
+
+    I searched all over the website that she linked in the pdf and nowhere could I find a validator.
+    Instead I wrote my own that has advanced error output.
+
+    */
+
     function validateInput(input) {
         if (input === "") return "<empty>";
-        return input.replace(/^-?\d+/, "");
+        return input.replace(/^-?\d+/, ""); // Replaces a valid possitive or negative integer, and returns the rest (the rest would be invalid input)
     }
 
     $("#topFrom").keyup(function () {
         var invalidPart = validateInput($("#topFrom").val());
-        if (invalidPart === "") {
+        if (invalidPart === "") { // If the input is valid, display no warnings
             $("#topFromWarning").text("");
             $("#topFrom").removeClass("warning");
-        } else {
+        } else { // If the input is invalid, show the invalid field and display the section of code that is invalid
             $("#topFromWarning").text("Top From: '" + invalidPart + "' not recognized, please only enter a valid number");
             $("#topFrom").addClass("warning");
         }
     });
 
+    // The rest of the functions follow the same paradigm as the last one
     $("#topTo").keyup(function () {
         var invalidPart = validateInput($("#topTo").val());
         if (invalidPart === "") {
