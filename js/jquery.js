@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     function validateInput(input) {
         if (input === "") return "<empty>";
-        return input.replace(/^-?\d+$/gi, "");
+        return input.replace(/^-?\d+/, "");
     }
 
     $("#topFrom").keyup(function () {
