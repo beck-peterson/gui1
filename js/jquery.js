@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
 
-    function validateInput(msg, input) {
+    function validateInput(input) {
         return input.match(/^\d+$/gi);
     }
 
