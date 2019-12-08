@@ -14,10 +14,18 @@ $(document).ready(function () {
     // This was helped by jqueryui.com
 
     $("#tabs").tabs();
-    $("#topFromSlider").slider().width("250px");
-    $("#topToSlider").slider().width("250px");
-    $("#sideFromSlider").slider().width("250px");
-    $("#sideToSlider").slider().width("250px");
+    $("#topFromSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+        $("#topFrom").val($("#topFromSlider").slider().value());
+    });
+    $("#topToSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+
+    });
+    $("#sideFromSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+
+    });
+    $("#sideToSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+
+    });
 
     /**
      * This program follows the model of the code we were told to use as a guideline
@@ -25,7 +33,7 @@ $(document).ready(function () {
 
     $('#form').submit(function (e) {
         if ($(this).valid()) {
-            generateMultiplicationTable();
+            generateMultiplicationTableTab();
             return false; // prevents screen refresh
         }
     });
@@ -103,4 +111,35 @@ $(document).ready(function () {
             $(element).css({ "border": "" });
         }
     });
+
+    function generateMultiplicationTable() {
+        var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents, warning, invalidInput = false;
+        elmnt = document.getElementById("generatedTable");
+        warning = document.getElementById("warning");
+        topFrom = parseInt(document.getElementById("topFrom").value);
+        topTo = parseInt(document.getElementById("topTo").value);
+        sideFrom = parseInt(document.getElementById("sideFrom").value);
+        sideTo = parseInt(document.getElementById("sideTo").value);
+
+        if (isNaN(topFrom) || isNaN(topTo) || isNaN(sideFrom) || isNaN(sideTo)) {
+            return;
+        }
+
+        topInc = topTo > topFrom ? 1 : -1;
+        sideInc = sideTo > sideFrom ? 1 : -1;
+        tableContents = "<tr><td></td>";
+        for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
+            tableContents += "<td class=\"dark\">" + x + "</td>";
+        }
+        tableContents += "</tr>";
+        for (y = sideFrom; sideTo > sideFrom ? y <= sideTo : y >= sideTo; y += sideInc) {
+            tableContents += "<tr>";
+            tableContents += "<td class=\"dark\">" + y + "</td>";
+            for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
+                tableContents += "<td class=\"light\">" + (x * y) + "</td>";
+            }
+            tableContents += "</tr>";
+        }
+        elmnt.innerHTML = tableContents;
+    }
 });
