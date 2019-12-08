@@ -40,7 +40,7 @@ function generateMultiplicationTableTab() {
     }
     currentTab++;
     $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
-    $("#tabs").append("<div if=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
+    $("#tabs").append("<div id=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
 }
 
 $(document).ready(function () {
