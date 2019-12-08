@@ -14,10 +14,10 @@ $(document).ready(function () {
     // This was helped by jqueryui.com
 
     $("#tabs").tabs();
-    $("#topFromSlider").slider().width("100px");
-    $("#topToSlider").slider().width("100px");
-    $("#sideFromSlider").slider().width("100px");
-    $("#sideToSlider").slider().width("100px");
+    $("#topFromSlider").slider().width("250px");
+    $("#topToSlider").slider().width("250px");
+    $("#sideFromSlider").slider().width("250px");
+    $("#sideToSlider").slider().width("250px");
 
     /**
      * This program follows the model of the code we were told to use as a guideline
