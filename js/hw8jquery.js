@@ -39,8 +39,8 @@ function generateMultiplicationTableTab() {
         tableContents += "</tr>";
     }
     currentTab++;
-    $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
-    $("#tabs").append("<div id=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
+    $("#tabs ul").append("<li class=\"ui-state-default ui-corner-top ui-tabs-active ui-state-active\" role=\"tab\" tabindex=\"" + currentTab - 1 + "\" aria-controls=\"tabs-" + currentTab + "\" aria-labelledby=\"ui-id-" + currentTab + "\" aria-selected=\"true\" aria-expanded=\"true\"><a href=\"#tabs-" + currentTab + "\" class=\"ui-tabs-anchor\" role=\"presentation\" tabindex=\"-1\" id=\"ui-id-" + currentTab + "\"></a></li>");
+    $("#tabs").append("<div id=\"tabs-" + currentTab + "\" aria-labelledby=\"ui-id-" + currentTab + "\" class=\"ui-tabs-panel ui-widget-content ui-corner-bottom\" role=\"tabpanel\" aria-hidden=\"false\">" + tableContents + "</div>")
 }
 
 $(document).ready(function () {
