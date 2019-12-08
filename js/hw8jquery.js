@@ -41,6 +41,7 @@ function generateMultiplicationTableTab() {
     $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
     $("#tabs").append(tableContents);
     $("#tabs").tabs("refresh");
+    $("#tabs").tabs("option", "active", currentTab);
 }
 
 $(document).ready(function () {
