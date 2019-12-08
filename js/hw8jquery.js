@@ -18,6 +18,7 @@ $(document).ready(function () {
     $('#form').submit(function (e) {
         if ($(this).valid()) {
             generateMultiplicationTable();
+            return false; // prevents screen refresh
         }
     });
 
