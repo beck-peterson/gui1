@@ -10,6 +10,38 @@ var tblValidator = {
 }
 
 var currentTab = 1;
+function generateMultiplicationTableTab() {
+    var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents, warning, invalidInput = false;
+    elmnt = document.getElementById("generatedTable");
+    warning = document.getElementById("warning");
+    topFrom = parseInt(document.getElementById("topFrom").value);
+    topTo = parseInt(document.getElementById("topTo").value);
+    sideFrom = parseInt(document.getElementById("sideFrom").value);
+    sideTo = parseInt(document.getElementById("sideTo").value);
+
+    if (isNaN(topFrom) || isNaN(topTo) || isNaN(sideFrom) || isNaN(sideTo)) {
+        return;
+    }
+
+    topInc = topTo > topFrom ? 1 : -1;
+    sideInc = sideTo > sideFrom ? 1 : -1;
+    tableContents = "<tr><td></td>";
+    for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
+        tableContents += "<td class=\"dark\">" + x + "</td>";
+    }
+    tableContents += "</tr>";
+    for (y = sideFrom; sideTo > sideFrom ? y <= sideTo : y >= sideTo; y += sideInc) {
+        tableContents += "<tr>";
+        tableContents += "<td class=\"dark\">" + y + "</td>";
+        for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
+            tableContents += "<td class=\"light\">" + (x * y) + "</td>";
+        }
+        tableContents += "</tr>";
+    }
+    currentTab++;
+    $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
+    $("#tabs").append("<div if=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
+}
 
 $(document).ready(function () {
 
@@ -163,37 +195,4 @@ $(document).ready(function () {
             $(element).css({ "border": "" });
         }
     });
-
-    function generateMultiplicationTableTab() {
-        var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents, warning, invalidInput = false;
-        elmnt = document.getElementById("generatedTable");
-        warning = document.getElementById("warning");
-        topFrom = parseInt(document.getElementById("topFrom").value);
-        topTo = parseInt(document.getElementById("topTo").value);
-        sideFrom = parseInt(document.getElementById("sideFrom").value);
-        sideTo = parseInt(document.getElementById("sideTo").value);
-
-        if (isNaN(topFrom) || isNaN(topTo) || isNaN(sideFrom) || isNaN(sideTo)) {
-            return;
-        }
-
-        topInc = topTo > topFrom ? 1 : -1;
-        sideInc = sideTo > sideFrom ? 1 : -1;
-        tableContents = "<tr><td></td>";
-        for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
-            tableContents += "<td class=\"dark\">" + x + "</td>";
-        }
-        tableContents += "</tr>";
-        for (y = sideFrom; sideTo > sideFrom ? y <= sideTo : y >= sideTo; y += sideInc) {
-            tableContents += "<tr>";
-            tableContents += "<td class=\"dark\">" + y + "</td>";
-            for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
-                tableContents += "<td class=\"light\">" + (x * y) + "</td>";
-            }
-            tableContents += "</tr>";
-        }
-        currentTab++;
-        $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
-        $("#tabs").append("<div if=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
-    }
 });
