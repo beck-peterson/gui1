@@ -2,31 +2,33 @@
 <!-- Beck A. Peterson -->
 <!-- beck_peterson@student.uml.edu -->
 <!-- I am affiliated as a student at UMass Lowell in course 91.61 GUI Programming I -->
-<!-- File created on 9/13/19 -->
-<!-- This is a test file to test scrolling and linking for my navigation -->
-
+<!-- File created on 12/8/19 -->
 <!-- For comments about the external html and structure of the page, read the comments in index.html -->
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        
-        <base href="https://beck-peterson.github.io/gui1/">
-        <meta charset="utf-8">
-        <title>Beck Peterson Undergrad Portfolio</title>
-        <link rel="stylesheet" href="css/styles.css">
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="js/scripts.js"></script>
-        <script src="js/jquery.js"></script>
-        
-    </head>
-    <body>
-        <div class="external-html" id="base.html"></div>
-        
-        <div class="contents">
-            <div class="separator">
-                <h3>Enter Range</h3>
-            </div>
-            <div class="padded">
+<head>
+
+    <!--<base href="D:/GitHub/gui1/">-->
+    <base href="https://beck-peterson.github.io/gui1/">
+    <meta charset="utf-8">
+    <title>Beck Peterson Undergrad Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="js/additional-methods.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/hw8jquery.js"></script>
+
+</head>
+<body>
+    <div class="external-html" id="base.html"></div>
+
+    <div class="contents">
+        <div class="separator">
+            <h3>Enter Range</h3>
+        </div>
+        <div class="padded">
+            <form id="form" method="GET" action="">
                 <table>
                     <tr>
                         <td>
@@ -41,16 +43,16 @@
                                     <td></td>
                                     <td></td>
                                     <td class="light">
-                                        <form><input type="text" id="topFrom" value="3"></form>
+                                        <input type="text" name="topFrom" id="topFrom" value="3">
                                     </td>
                                     <td class="light">
-                                        <form><input type="text" id="topTo" value="6"></form>
+                                        <input type="text" name="topTo" id="topTo" value="6">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="dark">From</td>
                                     <td class="light">
-                                        <form><input type="text" id="sideFrom" value="-2"></form>
+                                        <input type="text" name="sideFrom" id="sideFrom" value="-2">
                                     </td>
                                     <td class="light"></td>
                                     <td class="light"></td>
@@ -58,7 +60,7 @@
                                 <tr>
                                     <td class="dark">To</td>
                                     <td class="light">
-                                        <form><input type="text" id="sideTo" value="3"></form>
+                                        <input type="text" name="sideTo" id="sideTo" value="3">
                                     </td>
                                     <td class="light"></td>
                                     <td class="light"></td>
@@ -66,7 +68,7 @@
                             </table>
                         </td>
                         <td>
-                            <button onclick="generateMultiplicationTable();" style="margin-left: 10px;">Generate</button>
+                            <input type="Submit" value="Generate" style="margin-left: 10px">
                         </td>
                         <td>
                             <table style="margin-left: 10px;">
@@ -78,65 +80,66 @@
                         </td>
                     </tr>
                 </table>
-            </div>
-            <div class="separator">
-                <h3>Multiplication Table</h3>
-            </div>
-            <div class="padded">
-                <table class="multiplicationTable" id="generatedTable">
-                    <tr>
-                        <td></td>
-                        <td class="dark">3</td>
-                        <td class="dark">4</td>
-                        <td class="dark">5</td>
-                        <td class="dark">6</td>
-                    </tr>
-                    <tr>
-                        <td class="dark">-2</td>
-                        <td class="light">-6</td>
-                        <td class="light">-8</td>
-                        <td class="light">-10</td>
-                        <td class="light">-12</td>
-                    </tr>
-                    <tr>
-                        <td class="dark">-1</td>
-                        <td class="light">-3</td>
-                        <td class="light">-4</td>
-                        <td class="light">-5</td>
-                        <td class="light">-6</td>
-                    </tr>
-                    <tr>
-                        <td class="dark">0</td>
-                        <td class="light">0</td>
-                        <td class="light">0</td>
-                        <td class="light">0</td>
-                        <td class="light">0</td>
-                    </tr>
-                    <tr>
-                        <td class="dark">1</td>
-                        <td class="light">3</td>
-                        <td class="light">4</td>
-                        <td class="light">5</td>
-                        <td class="light">6</td>
-                    </tr>
-                    <tr>
-                        <td class="dark">2</td>
-                        <td class="light">6</td>
-                        <td class="light">8</td>
-                        <td class="light">10</td>
-                        <td class="light">12</td>
-                    </tr>
-                    <tr>
-                        <td class="dark">3</td>
-                        <td class="light">9</td>
-                        <td class="light">12</td>
-                        <td class="light">15</td>
-                        <td class="light">18</td>
-                    </tr>
-                </table>
-            </div>
+            </form>
         </div>
+        <div class="separator">
+            <h3>Multiplication Table</h3>
+        </div>
+        <div class="padded">
+            <table class="multiplicationTable" id="generatedTable">
+                <tr>
+                    <td></td>
+                    <td class="dark">3</td>
+                    <td class="dark">4</td>
+                    <td class="dark">5</td>
+                    <td class="dark">6</td>
+                </tr>
+                <tr>
+                    <td class="dark">-2</td>
+                    <td class="light">-6</td>
+                    <td class="light">-8</td>
+                    <td class="light">-10</td>
+                    <td class="light">-12</td>
+                </tr>
+                <tr>
+                    <td class="dark">-1</td>
+                    <td class="light">-3</td>
+                    <td class="light">-4</td>
+                    <td class="light">-5</td>
+                    <td class="light">-6</td>
+                </tr>
+                <tr>
+                    <td class="dark">0</td>
+                    <td class="light">0</td>
+                    <td class="light">0</td>
+                    <td class="light">0</td>
+                    <td class="light">0</td>
+                </tr>
+                <tr>
+                    <td class="dark">1</td>
+                    <td class="light">3</td>
+                    <td class="light">4</td>
+                    <td class="light">5</td>
+                    <td class="light">6</td>
+                </tr>
+                <tr>
+                    <td class="dark">2</td>
+                    <td class="light">6</td>
+                    <td class="light">8</td>
+                    <td class="light">10</td>
+                    <td class="light">12</td>
+                </tr>
+                <tr>
+                    <td class="dark">3</td>
+                    <td class="light">9</td>
+                    <td class="light">12</td>
+                    <td class="light">15</td>
+                    <td class="light">18</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-        <script>loadHTML();</script>
-    </body>
+    <script>loadHTML();</script>
+</body>
 </html>
