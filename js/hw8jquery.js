@@ -49,33 +49,37 @@ $(document).ready(function () {
 
     $("#tabs").tabs();
 
-    $("#topFromSlider").slider({ value: 3 }).width("250px");
+    $("#topFromSlider").slider().width("250px");
     $("#topFromSlider").on("slide", function (event, ui) {
         $("#topFrom").val($("#topFromSlider").slider("option", "value"));
     });
     $("#topFromSlider").slider("option", "min", -26);
     $("#topFromSlider").slider("option", "max", 51);
+    $("#topFromSlider").slider("option", "value", 3);
 
-    $("#topToSlider").slider({ value: 6 }).width("250px");
+    $("#topToSlider").slider().width("250px");
     $("#topToSlider").on("slide", function (event, ui) {
         $("#topTo").val($("#topToSlider").slider("option", "value"));
     });
     $("#topToSlider").slider("option", "min", -26);
     $("#topToSlider").slider("option", "max", 51);
+    $("#topToSlider").slider("option", "value", 6);
 
-    $("#sideFromSlider").slider({ value: -2 }).width("250px");
+    $("#sideFromSlider").slider().width("250px");
     $("#sideFromSlider").on("slide", function (event, ui) {
         $("#sideFrom").val($("#sideFromSlider").slider("option", "value"));
     });
     $("#sideFromSlider").slider("option", "min", -26);
     $("#sideFromSlider").slider("option", "max", 51);
+    $("#sideFromSlider").slider("option", "value", -2);
 
-    $("#sideToSlider").slider({ value: 3 }).width("250px");
+    $("#sideToSlider").slider().width("250px");
     $("#sideToSlider").on("slide", function (event, ui) {
         $("#sideTo").val($("#sideToSlider").slider("option", "value"));
     });
     $("#sideToSlider").slider("option", "min", -26);
     $("#sideToSlider").slider("option", "max", 51);
+    $("#sideToSlider").slider("option", "value", 3);
 
     function validateInput(input) {
         if (input === "") return "<empty>";
