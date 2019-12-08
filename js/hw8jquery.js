@@ -19,29 +19,63 @@ $(document).ready(function () {
     $("#topFromSlider").on("slide", function (event, ui) {
         $("#topFrom").val($("#topFromSlider").slider("option", "value"));
     });
-    $("#topFromSlider").slider("option", "min", -25);
-    $("#topFromSlider").slider("option", "max", 50);
+    $("#topFromSlider").slider("option", "min", -26);
+    $("#topFromSlider").slider("option", "max", 51);
 
     $("#topToSlider").slider().width("250px");
     $("#topToSlider").on("slide", function (event, ui) {
         $("#topTo").val($("#topToSlider").slider("option", "value"));
     });
-    $("#topToSlider").slider("option", "min", -25);
-    $("#topToSlider").slider("option", "max", 50);
+    $("#topToSlider").slider("option", "min", -26);
+    $("#topToSlider").slider("option", "max", 51);
 
     $("#sideFromSlider").slider().width("250px");
     $("#sideFromSlider").on("slide", function (event, ui) {
         $("#sideFrom").val($("#sideFromSlider").slider("option", "value"));
     });
-    $("#sideFromSlider").slider("option", "min", -25);
-    $("#sideFromSlider").slider("option", "max", 50);
+    $("#sideFromSlider").slider("option", "min", -26);
+    $("#sideFromSlider").slider("option", "max", 51);
 
     $("#sideToSlider").slider().width("250px");
     $("#sideToSlider").on("slide", function (event, ui) {
         $("#sideTo").val($("#sideToSlider").slider("option", "value"));
     });
-    $("#sideToSlider").slider("option", "min", -25);
-    $("#sideToSlider").slider("option", "max", 50);
+    $("#sideToSlider").slider("option", "min", -26);
+    $("#sideToSlider").slider("option", "max", 51);
+
+    function validateInput(input) {
+        if (input === "") return "<empty>";
+        return input.replace(/^-?\d+/, ""); // Replaces a valid possitive or negative integer, and returns the rest (the rest would be invalid input)
+    }
+
+    $("#topFrom").keyup(function () {
+        var invalidPart = validateInput($("#topFrom").val());
+        if (invalidPart === "") { // If the input is valid, display no warnings
+            $("#topFromSlider").slider("option", "value", $("#topFrom").val());
+        }
+    });
+
+    // The rest of the functions follow the same paradigm as the last one
+    $("#topTo").keyup(function () {
+        var invalidPart = validateInput($("#topTo").val());
+        if (invalidPart === "") {
+            $("#topToSlider").slider("option", "value", $("#topTo").val());
+        }
+    });
+
+    $("#sideFrom").keyup(function () {
+        var invalidPart = validateInput($("#sideFrom").val());
+        if (invalidPart === "") {
+            $("#sideFromSlider").slider("option", "value", $("#sideFrom").val());
+        }
+    });
+
+    $("#sideTo").keyup(function () {
+        var invalidPart = validateInput($("#sideTo").val());
+        if (invalidPart === "") {
+            $("#sideToSlider").slider("option", "value", $("#sideTo").val());
+        }
+    });
 
     /**
      * This program follows the model of the code we were told to use as a guideline
