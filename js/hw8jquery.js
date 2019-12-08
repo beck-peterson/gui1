@@ -16,28 +16,28 @@ $(document).ready(function () {
     $("#tabs").tabs();
 
     $("#topFromSlider").slider().width("250px");
-    $("#topFromSlider").on("slidechange", function (event, ui) {
+    $("#topFromSlider").on("slide", function (event, ui) {
         $("#topFrom").val($("#topFromSlider").slider("option", "value"));
     });
     $("#topFromSlider").slider("option", "min", -25);
     $("#topFromSlider").slider("option", "max", 50);
 
     $("#topToSlider").slider().width("250px");
-    $("#topToSlider").on("slidechange", function (event, ui) {
+    $("#topToSlider").on("slide", function (event, ui) {
         $("#topTo").val($("#topToSlider").slider("option", "value"));
     });
     $("#topToSlider").slider("option", "min", -25);
     $("#topToSlider").slider("option", "max", 50);
 
     $("#sideFromSlider").slider().width("250px");
-    $("#sideFromSlider").on("slidechange", function (event, ui) {
+    $("#sideFromSlider").on("slide", function (event, ui) {
         $("#sideFrom").val($("#sideFromSlider").slider("option", "value"));
     });
     $("#sideFromSlider").slider("option", "min", -25);
     $("#sideFromSlider").slider("option", "max", 50);
 
     $("#sideToSlider").slider().width("250px");
-    $("#sideToSlider").on("slidechange", function (event, ui) {
+    $("#sideToSlider").on("slide", function (event, ui) {
         $("#sideTo").val($("#sideToSlider").slider("option", "value"));
     });
     $("#sideToSlider").slider("option", "min", -25);
