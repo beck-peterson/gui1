@@ -15,8 +15,6 @@ $(document).ready(function () {
      * This program follows the model of the code we were told to use as a guideline
      **/
 
-    onSubmit();
-
     $('#form').submit(function (e) {
         if ($(this).valid()) {
             generateMultiplicationTable();
