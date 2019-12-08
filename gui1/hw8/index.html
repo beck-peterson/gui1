@@ -16,6 +16,7 @@
     <script src="js/jquery-1.8.2.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
     <script src="js/additional-methods.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
     <script src="js/scripts.js"></script>
     <script src="js/hw8jquery.js"></script>
 
@@ -68,15 +69,13 @@
                             </table>
                         </td>
                         <td>
-                            <input type="Submit" value="Generate" style="margin-left: 10px">
+                            <div id="topFromSlider"></div>
+                            <div id="topToSlider"></div>
+                            <div id="sideFromSlider"></div>
+                            <div id="sideToSlider"></div>
                         </td>
                         <td>
-                            <table style="margin-left: 10px;">
-                                <tr><td><div id="topFromWarning" class="warning"></div></td></tr>
-                                <tr><td><div id="topToWarning" class="warning"></div></td></tr>
-                                <tr><td><div id="sideFromWarning" class="warning"></div></td></tr>
-                                <tr><td><div id="sideToWarning" class="warning"></div></td></tr>
-                            </table>
+                            <input type="Submit" value="Generate" style="margin-left: 10px">
                         </td>
                     </tr>
                 </table>
@@ -86,57 +85,64 @@
             <h3>Multiplication Table</h3>
         </div>
         <div class="padded">
-            <table class="multiplicationTable" id="generatedTable">
-                <tr>
-                    <td></td>
-                    <td class="dark">3</td>
-                    <td class="dark">4</td>
-                    <td class="dark">5</td>
-                    <td class="dark">6</td>
-                </tr>
-                <tr>
-                    <td class="dark">-2</td>
-                    <td class="light">-6</td>
-                    <td class="light">-8</td>
-                    <td class="light">-10</td>
-                    <td class="light">-12</td>
-                </tr>
-                <tr>
-                    <td class="dark">-1</td>
-                    <td class="light">-3</td>
-                    <td class="light">-4</td>
-                    <td class="light">-5</td>
-                    <td class="light">-6</td>
-                </tr>
-                <tr>
-                    <td class="dark">0</td>
-                    <td class="light">0</td>
-                    <td class="light">0</td>
-                    <td class="light">0</td>
-                    <td class="light">0</td>
-                </tr>
-                <tr>
-                    <td class="dark">1</td>
-                    <td class="light">3</td>
-                    <td class="light">4</td>
-                    <td class="light">5</td>
-                    <td class="light">6</td>
-                </tr>
-                <tr>
-                    <td class="dark">2</td>
-                    <td class="light">6</td>
-                    <td class="light">8</td>
-                    <td class="light">10</td>
-                    <td class="light">12</td>
-                </tr>
-                <tr>
-                    <td class="dark">3</td>
-                    <td class="light">9</td>
-                    <td class="light">12</td>
-                    <td class="light">15</td>
-                    <td class="light">18</td>
-                </tr>
-            </table>
+            <div id="tabs">
+                <ul>
+                    <li><a href="tabs-1"></a></li>
+                </ul>
+            </div>
+            <div id="tabs-1">
+                <table class="multiplicationTable" id="generatedTable">
+                    <tr>
+                        <td></td>
+                        <td class="dark">3</td>
+                        <td class="dark">4</td>
+                        <td class="dark">5</td>
+                        <td class="dark">6</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">-2</td>
+                        <td class="light">-6</td>
+                        <td class="light">-8</td>
+                        <td class="light">-10</td>
+                        <td class="light">-12</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">-1</td>
+                        <td class="light">-3</td>
+                        <td class="light">-4</td>
+                        <td class="light">-5</td>
+                        <td class="light">-6</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">0</td>
+                        <td class="light">0</td>
+                        <td class="light">0</td>
+                        <td class="light">0</td>
+                        <td class="light">0</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">1</td>
+                        <td class="light">3</td>
+                        <td class="light">4</td>
+                        <td class="light">5</td>
+                        <td class="light">6</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">2</td>
+                        <td class="light">6</td>
+                        <td class="light">8</td>
+                        <td class="light">10</td>
+                        <td class="light">12</td>
+                    </tr>
+                    <tr>
+                        <td class="dark">3</td>
+                        <td class="light">9</td>
+                        <td class="light">12</td>
+                        <td class="light">15</td>
+                        <td class="light">18</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 

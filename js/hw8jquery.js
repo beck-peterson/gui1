@@ -95,4 +95,10 @@ $(document).ready(function () {
             $(element).css({ "border": "" });
         }
     });
+
+    $("#tabs").tabs();
+    $("#topFromSlider").slider();
+    $("#topToSlider").slider();
+    $("#sideFromSlider").slider();
+    $("#sideToSlider").slider();
 });
