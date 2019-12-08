@@ -11,9 +11,7 @@ var tblValidator = {
 
 var currentTab = 1;
 function generateMultiplicationTableTab() {
-    var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents, warning, invalidInput = false;
-    elmnt = document.getElementById("generatedTable");
-    warning = document.getElementById("warning");
+    var topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents, invalidInput = false;
     topFrom = parseInt(document.getElementById("topFrom").value);
     topTo = parseInt(document.getElementById("topTo").value);
     sideFrom = parseInt(document.getElementById("sideFrom").value);
@@ -38,6 +36,7 @@ function generateMultiplicationTableTab() {
         }
         tableContents += "</tr>";
     }
+    alert(tableContents);
     currentTab++;
     $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
     $("#tabs").append("<div id=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
