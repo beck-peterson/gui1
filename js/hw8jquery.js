@@ -24,7 +24,7 @@ function generateMultiplicationTableTab() {
 
     topInc = topTo > topFrom ? 1 : -1;
     sideInc = sideTo > sideFrom ? 1 : -1;
-    tableContents = "<tr><td></td>";
+    tableContents = "<div id=\"tabs-" + currentTab + "\"><tr><td></td>";
     for (x = topFrom; topTo > topFrom ? x <= topTo : x >= topTo; x += topInc) {
         tableContents += "<td class=\"dark\">" + x + "</td>";
     }
@@ -37,9 +37,9 @@ function generateMultiplicationTableTab() {
         }
         tableContents += "</tr>";
     }
-    alert(tableContents);
+    tableContents += "</div>";
     $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
-    $("#tabs").append("<div id=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
+    $("#tabs").append(tableContents);
     $("#tabs").tabs("refresh");
 }
 
