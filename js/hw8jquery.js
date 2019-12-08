@@ -9,34 +9,36 @@ var tblValidator = {
     }
 }
 
+var currentTab = 1;
+
 $(document).ready(function () {
 
     // This was helped by jqueryui.com
 
     $("#tabs").tabs();
 
-    $("#topFromSlider").slider().width("250px");
+    $("#topFromSlider").slider({ value: 3 }).width("250px");
     $("#topFromSlider").on("slide", function (event, ui) {
         $("#topFrom").val($("#topFromSlider").slider("option", "value"));
     });
     $("#topFromSlider").slider("option", "min", -26);
     $("#topFromSlider").slider("option", "max", 51);
 
-    $("#topToSlider").slider().width("250px");
+    $("#topToSlider").slider({ value: 6 }).width("250px");
     $("#topToSlider").on("slide", function (event, ui) {
         $("#topTo").val($("#topToSlider").slider("option", "value"));
     });
     $("#topToSlider").slider("option", "min", -26);
     $("#topToSlider").slider("option", "max", 51);
 
-    $("#sideFromSlider").slider().width("250px");
+    $("#sideFromSlider").slider({ value: -2 }).width("250px");
     $("#sideFromSlider").on("slide", function (event, ui) {
         $("#sideFrom").val($("#sideFromSlider").slider("option", "value"));
     });
     $("#sideFromSlider").slider("option", "min", -26);
     $("#sideFromSlider").slider("option", "max", 51);
 
-    $("#sideToSlider").slider().width("250px");
+    $("#sideToSlider").slider({ value: 3 }).width("250px");
     $("#sideToSlider").on("slide", function (event, ui) {
         $("#sideTo").val($("#sideToSlider").slider("option", "value"));
     });
@@ -162,7 +164,7 @@ $(document).ready(function () {
         }
     });
 
-    function generateMultiplicationTable() {
+    function generateMultiplicationTableTab() {
         var elmnt, topFrom, topTo, sideFrom, sideTo, topInc, sideInc, x, y, tableContents, warning, invalidInput = false;
         elmnt = document.getElementById("generatedTable");
         warning = document.getElementById("warning");
@@ -190,6 +192,8 @@ $(document).ready(function () {
             }
             tableContents += "</tr>";
         }
-        elmnt.innerHTML = tableContents;
+        currentTab++;
+        $("#tabs ul").append("<li><a href=\"#tabs-" + currentTab + "\"></a></li>");
+        $("#tabs").append("<div if=\"tabs-" + currentTab + "\">" + tableContents + "</div>")
     }
 });
