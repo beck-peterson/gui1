@@ -14,18 +14,34 @@ $(document).ready(function () {
     // This was helped by jqueryui.com
 
     $("#tabs").tabs();
-    $("#topFromSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+
+    $("#topFromSlider").slider().width("250px");
+    $("#topFromSlider").on("slidechange", function (event, ui) {
         $("#topFrom").val($("#topFromSlider").slider().value());
     });
-    $("#topToSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+    $("#topFromSlider").slider("option", "min", -25);
+    $("#topFromSlider").slider("option", "max", 50);
 
+    $("#topToSlider").slider().width("250px");
+    $("#topToSlider").on("slidechange", function (event, ui) {
+        $("#topTo").val($("#topToSlider").slider().value());
     });
-    $("#sideFromSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+    $("#topToSlider").slider("option", "min", -25);
+    $("#topToSlider").slider("option", "max", 50);
 
+    $("#sideFromSlider").slider().width("250px");
+    $("#sideFromSlider").on("slidechange", function (event, ui) {
+        $("#sideFrom").val($("#sideFromSlider").slider().value());
     });
-    $("#sideToSlider").slider({ values: [-25, 50] }).width("250px").change(function () {
+    $("#sideFromSlider").slider("option", "min", -25);
+    $("#sideFromSlider").slider("option", "max", 50);
 
+    $("#sideToSlider").slider().width("250px");
+    $("#sideToSlider").on("slidechange", function (event, ui) {
+        $("#sideTo").val($("#sideToSlider").slider().value());
     });
+    $("#sideToSlider").slider("option", "min", -25);
+    $("#sideToSlider").slider("option", "max", 50);
 
     /**
      * This program follows the model of the code we were told to use as a guideline
