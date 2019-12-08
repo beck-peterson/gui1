@@ -11,6 +11,14 @@ var tblValidator = {
 
 $(document).ready(function () {
 
+    // This was helped by jqueryui.com
+
+    $("#tabs").tabs();
+    $("#topFromSlider").slider();
+    $("#topToSlider").slider();
+    $("#sideFromSlider").slider();
+    $("#sideToSlider").slider();
+
     /**
      * This program follows the model of the code we were told to use as a guideline
      **/
@@ -95,10 +103,4 @@ $(document).ready(function () {
             $(element).css({ "border": "" });
         }
     });
-
-    $("#tabs").tabs();
-    $("#topFromSlider").slider();
-    $("#topToSlider").slider();
-    $("#sideFromSlider").slider();
-    $("#sideToSlider").slider();
 });
