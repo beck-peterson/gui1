@@ -72,7 +72,44 @@ $(document).ready(function () {
     $(".holder").each(function () {
         var tile = bag.getTile();
         $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
-    });    
+    });
+
+    var currentScore = 0, highScore = 0, currentMultiplier = 1;
+    $(".board, .doubleLetter").each(function () {
+        $(this).on("drop", function (event, ui) {
+            currentScore += 1;
+        });
+
+        $(this).on("dropout", function (event, ui) {
+            currentScore -= 1;
+        });
+    });
+
+    $(".doubleWord").each(function () {
+        $(this).on("drop", function (event, ui) {
+            currentMultiplier *= 2;
+        });
+
+        $(this).on("dropout", function (event, ui) {
+            currentMultiplier /= 2;
+        });
+    });
+
+    $(".board").each(function () {
+        $(this).on("drop", function (event, ui) {
+            $("#currentScore").text = "Current score: " + currentScore * currentMultiplier;
+            if (currentScore > highScore) {
+                highScore = currentScore;
+            }
+        });
+
+        $(this).on("dropout", function (event, ui) {
+            $("#currentScore").text = "Current score: " + currentScore * currentMultiplier;
+            if (currentScore > highScore) {
+                highScore = currentScore;
+            }
+        });
+    })
 
     $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner"});
 
