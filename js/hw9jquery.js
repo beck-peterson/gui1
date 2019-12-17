@@ -101,6 +101,7 @@ $(document).ready(function () {
             if (currentScore > highScore) {
                 highScore = currentScore;
             }
+            console.log(currentScore);
         });
 
         $(this).on("dropout", function (event, ui) {
@@ -108,10 +109,19 @@ $(document).ready(function () {
             if (currentScore > highScore) {
                 highScore = currentScore;
             }
+            console.log(currentScore);
         });
     })
 
     $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
-    $(".dropLocation").droppable({drop, out});
+    $(".dropLocation").droppable({
+        drop: function (event, ui) {
+
+        },
+
+        out: function (event, ui) {
+
+        }
+    });
 
 });
