@@ -71,7 +71,7 @@ $(document).ready(function () {
     var bag = new Bag();
     $(".holder").each(function () {
         var tile = bag.getTile();
-        $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
+        $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
     });
 
     var currentScore = 0, highScore = 0, currentMultiplier = 1;
