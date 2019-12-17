@@ -8,8 +8,8 @@
 $(document).ready(function () {
 
     class Bag {
-        var tiles;
         constructor() {
+            var tiles = [];
             addTiles(9, "A", 1, null);
             addTiles(2, "B", 3, null);
             addTiles(2, "C", 3, null);
@@ -63,7 +63,6 @@ $(document).ready(function () {
     }
 
     class Tile {
-        var char, value, image;
         constructor(char, value, image) {
             this.char = char;
             this.value = value;
