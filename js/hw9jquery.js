@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     class Bag {
         constructor() {
-            var tiles = [];
+            this.tiles = [];
             this.addTiles(9, "A", 1, null);
             this.addTiles(2, "B", 3, null);
             this.addTiles(2, "C", 3, null);
@@ -42,16 +42,16 @@ $(document).ready(function () {
 
         addTiles(number, char, value, image) {
             for (var i = 0; i < number; i++) {
-                tiles.push(new Tile(char, value, image));
+                this.tiles.push(new Tile(char, value, image));
             }
         }
 
         shakeBag() {
-            for (var i = 0; i < tiles.length; i++) {
-                var j = Math.floor(Math.random() * (tiles.length - i)) + i;
-                var temp = tiles[j];
-                tiles[j] = tiles[i];
-                tiles[i] = temp;
+            for (var i = 0; i < this.tiles.length; i++) {
+                var j = Math.floor(Math.random() * (this.tiles.length - i)) + i;
+                var temp = this.tiles[j];
+                this.tiles[j] = this.tiles[i];
+                this.tiles[i] = temp;
             }
         }
 
