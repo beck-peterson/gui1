@@ -76,37 +76,37 @@ $(document).ready(function () {
 
     var currentScore = 0, highScore = 0, currentMultiplier = 1;
     $(".board").each(function () {
-        $(this).on("dropover", function (event, ui) {
+        $(this).on("drop", function (event, ui) {
             currentScore += 1;
         });
 
-        $(this).on("dropout", function (event, ui) {
+        $(this).on("dropactivate", function (event, ui) {
             currentScore -= 1;
         });
     });
 
     $(".doubleLetter").each(function () {
-        $(this).on("dropover", function (event, ui) {
+        $(this).on("drop", function (event, ui) {
             currentScore += 2;
         });
 
-        $(this).on("dropout", function (event, ui) {
+        $(this).on("dropactivate", function (event, ui) {
             currentScore -= 2;
         });
     });
 
     $(".doubleWord").each(function () {
-        $(this).on("dropover", function (event, ui) {
+        $(this).on("drop", function (event, ui) {
             currentMultiplier *= 2;
         });
 
-        $(this).on("dropout", function (event, ui) {
+        $(this).on("dropactivate", function (event, ui) {
             currentMultiplier /= 2;
         });
     });
 
-    $(".board").each(function () {
-        $(this).on("dropover", function (event, ui) {
+    $(".board, .doubleLetter").each(function () {
+        $(this).on("drop", function (event, ui) {
             $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
             if (currentScore * currentMultiplier > highScore) {
                 highScore = currentScore * currentMultiplier;
@@ -114,7 +114,7 @@ $(document).ready(function () {
             console.log(currentScore * currentMultiplier);
         });
 
-        $(this).on("dropout", function (event, ui) {
+        $(this).on("dropactivate", function (event, ui) {
             $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
             if (currentScore * currentMultiplier > highScore) {
                 highScore = currentScore * currentMultiplier;
