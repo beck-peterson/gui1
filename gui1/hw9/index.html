@@ -1,0 +1,164 @@
+﻿<!-- Copyright (CC BY-NC) 2019 by Beck A. Peterson. -->
+<!-- Beck A. Peterson -->
+<!-- beck_peterson@student.uml.edu -->
+<!-- I am affiliated as a student at UMass Lowell in course 91.61 GUI Programming I -->
+<!-- File created on 12/8/19 -->
+<!-- For comments about the external html and structure of the page, read the comments in index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Beck Peterson Undergrad Portfolio</title>
+    <!--<link rel="stylesheet" href="https://beck-peterson.github.io/gui1/css/jquery-ui.css">-->
+    <link rel="stylesheet" href="https://beck-peterson.github.io/gui1/css/styles.css">
+    <script src="https://beck-peterson.github.io/gui1/js/jquery-1.8.2.min.js"></script>
+    <!--<script src="https://beck-peterson.github.io/gui1/js/jquery.validate.min.js"></script>
+    <script src="https://beck-peterson.github.io/gui1/js/additional-methods.min.js"></script>
+    <script src="https://beck-peterson.github.io/gui1/js/jquery-ui.min.js"></script>-->
+    <script src="https://beck-peterson.github.io/gui1/js/scripts.js"></script>
+    <script src="https://beck-peterson.github.io/gui1/js/hw9jquery.js"></script>
+
+</head>
+<body>
+    <div class="external-html" id="https://beck-peterson.github.io/gui1/base.html"></div>
+
+    <div class="contents">
+        <div class="separator">
+            <h3>Enter Range</h3>
+        </div>
+        <div class="padded">
+            <form id="form" method="GET" action="">
+                <table>
+                    <tr>
+                        <td>
+                            <table class="multiplicationTable">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="dark">From</td>
+                                    <td class="dark">To</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="light">
+                                        <input type="text" name="topFrom" id="topFrom" value="3">
+                                    </td>
+                                    <td class="light">
+                                        <input type="text" name="topTo" id="topTo" value="6">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="dark">From</td>
+                                    <td class="light">
+                                        <input type="text" name="sideFrom" id="sideFrom" value="-2">
+                                    </td>
+                                    <td class="light"></td>
+                                    <td class="light"></td>
+                                </tr>
+                                <tr>
+                                    <td class="dark">To</td>
+                                    <td class="light">
+                                        <input type="text" name="sideTo" id="sideTo" value="3">
+                                    </td>
+                                    <td class="light"></td>
+                                    <td class="light"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Top From: </td>
+                                    <td><div id="topFromSlider"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Top To: </td>
+                                    <td><div id="topToSlider"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Side From: </td>
+                                    <td><div id="sideFromSlider"></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Side To: </td>
+                                    <td><div id="sideToSlider"></div></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <input type="Submit" value="Generate" style="margin-left: 10px">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="separator">
+            <h3>Multiplication Table</h3>
+        </div>
+        <div class="padded">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1"></a></li>
+                </ul>
+                <div id="tabs-1">
+                    <table class="multiplicationTable" id="generatedTable">
+                        <tr>
+                            <td></td>
+                            <td class="dark">3</td>
+                            <td class="dark">4</td>
+                            <td class="dark">5</td>
+                            <td class="dark">6</td>
+                        </tr>
+                        <tr>
+                            <td class="dark">-2</td>
+                            <td class="light">-6</td>
+                            <td class="light">-8</td>
+                            <td class="light">-10</td>
+                            <td class="light">-12</td>
+                        </tr>
+                        <tr>
+                            <td class="dark">-1</td>
+                            <td class="light">-3</td>
+                            <td class="light">-4</td>
+                            <td class="light">-5</td>
+                            <td class="light">-6</td>
+                        </tr>
+                        <tr>
+                            <td class="dark">0</td>
+                            <td class="light">0</td>
+                            <td class="light">0</td>
+                            <td class="light">0</td>
+                            <td class="light">0</td>
+                        </tr>
+                        <tr>
+                            <td class="dark">1</td>
+                            <td class="light">3</td>
+                            <td class="light">4</td>
+                            <td class="light">5</td>
+                            <td class="light">6</td>
+                        </tr>
+                        <tr>
+                            <td class="dark">2</td>
+                            <td class="light">6</td>
+                            <td class="light">8</td>
+                            <td class="light">10</td>
+                            <td class="light">12</td>
+                        </tr>
+                        <tr>
+                            <td class="dark">3</td>
+                            <td class="light">9</td>
+                            <td class="light">12</td>
+                            <td class="light">15</td>
+                            <td class="light">18</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>loadHTML();</script>
+</body>
+</html>
