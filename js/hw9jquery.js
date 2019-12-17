@@ -40,15 +40,13 @@ $(document).ready(function () {
             shakeBag();
         }
 
-        function addTiles(number, char, value, image) {
-            var i;
+        addTiles(number, char, value, image) {
             for (i = 0; i < number; i++) {
                 tiles.push(new Tile(char, value, image));
             }
         }
 
-        function shakeBag() {
-            var i;
+        shakeBag() {
             for (i = 0; i < tiles.length; i++) {
                 var j = Math.floor(Math.random() * (tiles.length - i)) + i;
                 var temp = tiles[j];
@@ -57,7 +55,7 @@ $(document).ready(function () {
             }
         }
 
-        function getTile() {
+        getTile() {
             return tiles.pop();
         }
     }
@@ -71,7 +69,6 @@ $(document).ready(function () {
     }
 
     var bag = new Bag();
-    var i;
     for (i = 0; i < 20; i++) {
         console.log(bag.getTile().char);
     }
