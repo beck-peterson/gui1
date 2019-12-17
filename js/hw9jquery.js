@@ -73,4 +73,6 @@ $(document).ready(function () {
         console.log(bag.getTile().char);
     }
 
+    $(".draggable").draggable();
+
 });
