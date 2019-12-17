@@ -75,13 +75,23 @@ $(document).ready(function () {
     });
 
     var currentScore = 0, highScore = 0, currentMultiplier = 1;
-    $(".board, .doubleLetter").each(function () {
+    $(".board").each(function () {
         $(this).on("dropover", function (event, ui) {
             currentScore += 1;
         });
 
         $(this).on("dropout", function (event, ui) {
             currentScore -= 1;
+        });
+    });
+
+    $(".doubleLetter").each(function () {
+        $(this).on("dropover", function (event, ui) {
+            currentScore += 2;
+        });
+
+        $(this).on("dropout", function (event, ui) {
+            currentScore -= 2;
         });
     });
 
