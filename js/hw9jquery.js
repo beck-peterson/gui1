@@ -56,7 +56,7 @@ $(document).ready(function () {
         }
 
         getTile() {
-            return tiles.pop();
+            return this.tiles.pop();
         }
     }
 
