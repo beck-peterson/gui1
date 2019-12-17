@@ -107,7 +107,7 @@ $(document).ready(function () {
 
     $(".board").each(function () {
         $(this).on("dropover", function (event, ui) {
-            $("#currentScore").text = "Current score: " + (currentScore * currentMultiplier);
+            $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
             if (currentScore * currentMultiplier > highScore) {
                 highScore = currentScore * currentMultiplier;
             }
@@ -115,7 +115,7 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            $("#currentScore").text = "Current score: " + (currentScore * currentMultiplier);
+            $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
             if (currentScore * currentMultiplier > highScore) {
                 highScore = currentScore * currentMultiplier;
             }
