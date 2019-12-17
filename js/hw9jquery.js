@@ -8,7 +8,7 @@
 $(document).ready(function () {
 
     class Bag {
-        var tiles = [];
+        var tiles = new Array();
         constructor() {
             addTiles(9, "A", 1, null);
             addTiles(2, "B", 3, null);
@@ -43,7 +43,7 @@ $(document).ready(function () {
         function addTiles(number, char, value, image) {
             var i;
             for (i = 0; i < number; i++) {
-                tiles.push(Tile(char, value, image));
+                tiles.push(new Tile(char, value, image));
             }
         }
 
@@ -71,7 +71,7 @@ $(document).ready(function () {
         }
     }
 
-    var bag = Bag();
+    var bag = new Bag();
     var i;
     for (i = 0; i < 20; i++) {
         console.log(bag.getTile().char);
