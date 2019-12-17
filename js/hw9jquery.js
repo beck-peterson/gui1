@@ -80,7 +80,7 @@ $(document).ready(function () {
             currentScore += 1;
         });
 
-        $(this).on("dropactivate", function (event, ui) {
+        $(this).on("dropout", function (event, ui) {
             currentScore -= 1;
         });
     });
@@ -90,7 +90,7 @@ $(document).ready(function () {
             currentScore += 2;
         });
 
-        $(this).on("dropactivate", function (event, ui) {
+        $(this).on("dropout", function (event, ui) {
             currentScore -= 2;
         });
     });
@@ -100,7 +100,7 @@ $(document).ready(function () {
             currentMultiplier *= 2;
         });
 
-        $(this).on("dropactivate", function (event, ui) {
+        $(this).on("dropout", function (event, ui) {
             currentMultiplier /= 2;
         });
     });
@@ -114,7 +114,7 @@ $(document).ready(function () {
             console.log(currentScore * currentMultiplier);
         });
 
-        $(this).on("dropactivate", function (event, ui) {
+        $(this).on("dropout", function (event, ui) {
             $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
             if (currentScore * currentMultiplier > highScore) {
                 highScore = currentScore * currentMultiplier;
