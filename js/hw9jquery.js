@@ -78,19 +78,19 @@ $(document).ready(function () {
     $(".board").each(function () {
         $(this).on("drop", function (event, ui) {
             var tileVal = 0;
-            if ($(ui).hasClass("value1")) {
+            if (ui.draggable.hasClass("value1")) {
                 tileVal = 1;
-            } else if ($(ui).hasClass("value2")) {
+            } else if (ui.draggable.hasClass("value2")) {
                 tileVal = 2;
-            } else if ($(ui).hasClass("value3")) {
+            } else if (ui.draggable.hasClass("value3")) {
                 tileVal = 3;
-            } else if ($(ui).hasClass("value4")) {
+            } else if (ui.draggable.hasClass("value4")) {
                 tileVal = 4;
-            } else if ($(ui).hasClass("value5")) {
+            } else if (ui.draggable.hasClass("value5")) {
                 tileVal = 5;
-            } else if ($(ui).hasClass("value8")) {
+            } else if (ui.draggable.hasClass("value8")) {
                 tileVal = 8;
-            } else if ($(ui).hasClass("value10")) {
+            } else if (ui.draggable.hasClass("value10")) {
                 tileVal = 10;
             }
             currentScore += tileVal;
@@ -124,19 +124,19 @@ $(document).ready(function () {
     $(".doubleLetter").each(function () {
         $(this).on("drop", function (event, ui) {
             var tileVal = 0;
-            if ($(ui).hasClass("value1")) {
+            if (ui.draggable.hasClass("value1")) {
                 tileVal = 2;
-            } else if ($(ui).hasClass("value2")) {
+            } else if (ui.draggable.hasClass("value2")) {
                 tileVal = 4;
-            } else if ($(ui).hasClass("value3")) {
+            } else if (ui.draggable.hasClass("value3")) {
                 tileVal = 6;
-            } else if ($(ui).hasClass("value4")) {
+            } else if (ui.draggable.hasClass("value4")) {
                 tileVal = 8;
-            } else if ($(ui).hasClass("value5")) {
+            } else if (ui.draggable.hasClass("value5")) {
                 tileVal = 10;
-            } else if ($(ui).hasClass("value8")) {
+            } else if (ui.draggable.hasClass("value8")) {
                 tileVal = 16;
-            } else if ($(ui).hasClass("value10")) {
+            } else if (ui.draggable.hasClass("value10")) {
                 tileVal = 20;
             }
             currentScore += tileVal;
