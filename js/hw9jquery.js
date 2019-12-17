@@ -136,14 +136,14 @@ $(document).ready(function () {
         drop: function (event, ui) {
             if ($(this).hasClass("draggingTrue")) {
                 $(this).removeClass("draggingTrue");
-                $(this).addClass("dragginFalse");
+                $(this).addClass("draggingFalse");
             }
         },
 
         out: function (event, ui) {
             if ($(this).hasClass("draggingFalse")) {
                 $(this).removeClass("draggingFalse");
-                $(this).addClass("dragginTrue");
+                $(this).addClass("draggingTrue");
             }
         }
     });
