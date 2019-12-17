@@ -8,7 +8,7 @@
 $(document).ready(function () {
 
     class Bag {
-        var tiles = new Array();
+        var tiles = [];
         constructor() {
             addTiles(9, "A", 1, null);
             addTiles(2, "B", 3, null);
