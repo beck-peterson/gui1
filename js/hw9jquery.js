@@ -112,6 +112,6 @@ $(document).ready(function () {
     })
 
     $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
-    $(".draggable").droppable();
+    $(".dropLocation").droppable();
 
 });
