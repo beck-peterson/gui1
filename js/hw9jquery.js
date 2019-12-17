@@ -10,34 +10,34 @@ $(document).ready(function () {
     class Bag {
         constructor() {
             var tiles = [];
-            addTiles(9, "A", 1, null);
-            addTiles(2, "B", 3, null);
-            addTiles(2, "C", 3, null);
-            addTiles(4, "D", 2, null);
-            addTiles(12, "E", 1, null);
-            addTiles(2, "F", 4, null);
-            addTiles(3, "G", 2, null);
-            addTiles(2, "H", 4, null);
-            addTiles(9, "I", 1, null);
-            addTiles(1, "J", 8, null);
-            addTiles(1, "K", 5, null);
-            addTiles(4, "L", 1, null);
-            addTiles(2, "M", 3, null);
-            addTiles(6, "N", 1, null);
-            addTiles(8, "O", 1, null);
-            addTiles(2, "P", 3, null);
-            addTiles(1, "Q", 10, null);
-            addTiles(6, "R", 1, null);
-            addTiles(4, "S", 1, null);
-            addTiles(6, "T", 1, null);
-            addTiles(4, "U", 1, null);
-            addTiles(2, "V", 4, null);
-            addTiles(2, "W", 4, null);
-            addTiles(1, "X", 8, null);
-            addTiles(2, "Y", 4, null);
-            addTiles(1, "Z", 10, null);
-            addTiles(2, "_", 0, null);
-            shakeBag();
+            this.addTiles(9, "A", 1, null);
+            this.addTiles(2, "B", 3, null);
+            this.addTiles(2, "C", 3, null);
+            this.addTiles(4, "D", 2, null);
+            this.addTiles(12, "E", 1, null);
+            this.addTiles(2, "F", 4, null);
+            this.addTiles(3, "G", 2, null);
+            this.addTiles(2, "H", 4, null);
+            this.addTiles(9, "I", 1, null);
+            this.addTiles(1, "J", 8, null);
+            this.addTiles(1, "K", 5, null);
+            this.addTiles(4, "L", 1, null);
+            this.addTiles(2, "M", 3, null);
+            this.addTiles(6, "N", 1, null);
+            this.addTiles(8, "O", 1, null);
+            this.addTiles(2, "P", 3, null);
+            this.addTiles(1, "Q", 10, null);
+            this.addTiles(6, "R", 1, null);
+            this.addTiles(4, "S", 1, null);
+            this.addTiles(6, "T", 1, null);
+            this.addTiles(4, "U", 1, null);
+            this.addTiles(2, "V", 4, null);
+            this.addTiles(2, "W", 4, null);
+            this.addTiles(1, "X", 8, null);
+            this.addTiles(2, "Y", 4, null);
+            this.addTiles(1, "Z", 10, null);
+            this.addTiles(2, "_", 0, null);
+            this.shakeBag();
         }
 
         addTiles(number, char, value, image) {
