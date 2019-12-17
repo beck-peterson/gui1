@@ -97,19 +97,19 @@ $(document).ready(function () {
 
     $(".board").each(function () {
         $(this).on("dropover", function (event, ui) {
-            $("#currentScore").text = "Current score: " + currentScore * currentMultiplier;
-            if (currentScore > highScore) {
-                highScore = currentScore;
+            $("#currentScore").text = "Current score: " + (currentScore * currentMultiplier);
+            if (currentScore * currentMultiplier > highScore) {
+                highScore = currentScore * currentMultiplier;
             }
-            console.log(currentScore);
+            console.log(currentScore * currentMultiplier);
         });
 
         $(this).on("dropout", function (event, ui) {
-            $("#currentScore").text = "Current score: " + currentScore * currentMultiplier;
-            if (currentScore > highScore) {
-                highScore = currentScore;
+            $("#currentScore").text = "Current score: " + (currentScore * currentMultiplier);
+            if (currentScore * currentMultiplier > highScore) {
+                highScore = currentScore * currentMultiplier;
             }
-            console.log(currentScore);
+            console.log(currentScore * currentMultiplier);
         });
     })
 
