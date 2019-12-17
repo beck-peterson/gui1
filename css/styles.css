@@ -109,6 +109,12 @@ button {
     color: red;
 }
 
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /********************************************/
 /* navigation was assisted by w3schools.com */
 /********************************************/
