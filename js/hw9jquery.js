@@ -76,7 +76,7 @@ $(document).ready(function () {
 
     var currentScore = 0, highScore = 0, currentMultiplier = 1;
     $(".board, .doubleLetter").each(function () {
-        $(this).on("drop", function (event, ui) {
+        $(this).on("dropover", function (event, ui) {
             currentScore += 1;
         });
 
@@ -86,7 +86,7 @@ $(document).ready(function () {
     });
 
     $(".doubleWord").each(function () {
-        $(this).on("drop", function (event, ui) {
+        $(this).on("dropover", function (event, ui) {
             currentMultiplier *= 2;
         });
 
@@ -96,7 +96,7 @@ $(document).ready(function () {
     });
 
     $(".board").each(function () {
-        $(this).on("drop", function (event, ui) {
+        $(this).on("dropover", function (event, ui) {
             $("#currentScore").text = "Current score: " + currentScore * currentMultiplier;
             if (currentScore > highScore) {
                 highScore = currentScore;
@@ -115,7 +115,7 @@ $(document).ready(function () {
 
     $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     $(".dropLocation").droppable({
-        drop: function (event, ui) {
+        over: function (event, ui) {
 
         },
 
