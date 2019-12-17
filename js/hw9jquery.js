@@ -81,7 +81,9 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            currentScore -= 1;
+            if ($(this).hasClass("draggingFalse")) {
+                currentScore -= 1;
+            }
         });
     });
 
@@ -91,7 +93,9 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            currentScore -= 2;
+            if ($(this).hasClass("draggingFalse")) {
+                currentScore -= 2;
+            }
         });
     });
 
@@ -101,7 +105,9 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            currentMultiplier /= 2;
+            if ($(this).hasClass("draggingFalse")) {
+                currentMultiplier /= 2;
+            }
         });
     });
 
@@ -115,22 +121,30 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
-            if (currentScore * currentMultiplier > highScore) {
-                highScore = currentScore * currentMultiplier;
+            if ($(this).hasClass("draggingFalse")) {
+                $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
+                if (currentScore * currentMultiplier > highScore) {
+                    highScore = currentScore * currentMultiplier;
+                }
+                console.log(currentScore * currentMultiplier);
             }
-            console.log(currentScore * currentMultiplier);
         });
     })
 
     $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     $(".dropLocation").droppable({
-        over: function (event, ui) {
-
+        drop: function (event, ui) {
+            if ($(this).hasClass("draggingTrue")) {
+                $(this).removeClass("draggingTrue");
+                $(this).addClass("dragginFalse");
+            }
         },
 
         out: function (event, ui) {
-
+            if ($(this).hasClass("draggingFalse")) {
+                $(this).removeClass("draggingFalse");
+                $(this).addClass("dragginTrue");
+            }
         }
     });
 
