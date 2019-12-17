@@ -36,7 +36,7 @@ $(document).ready(function () {
             this.addTiles(1, "X", 8, null);
             this.addTiles(2, "Y", 4, null);
             this.addTiles(1, "Z", 10, null);
-            this.addTiles(2, "_", 0, null);
+            this.addTiles(2, "Blank", 0, null);
             this.shakeBag();
         }
 
@@ -69,8 +69,9 @@ $(document).ready(function () {
     }
 
     var bag = new Bag();
-    for (var i = 0; i < 20; i++) {
-        console.log(bag.getTile().char);
+    for (var i = 0; i < 7; i++) {
+        var tile = bag.getTile();
+        $("#holder").append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" width=\"64\" height=\"64\" class=\"draggable\"/>");
     }
 
     $(".draggable").draggable();
