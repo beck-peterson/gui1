@@ -69,11 +69,8 @@ $(document).ready(function () {
     }
 
     var bag = new Bag();
-    for (var i = 0; i < 7; i++) {
-        var tile = bag.getTile();
-        $("#tiles").append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" width=\"64\" height=\"64\" class=\"draggable\"/>");
-    }
+    $("#holder").append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + bag.getTile().char + ".jpg\" width=\"64\" height=\"64\" class=\"draggable\"/>");
 
-    $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner", snapTolerance: 10 });
+    $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner"});
 
 });
