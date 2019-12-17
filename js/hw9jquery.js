@@ -181,8 +181,8 @@ $(document).ready(function () {
 
     $(".board, .doubleLetter").each(function () {
         $(this).on("drop", function (event, ui) {
-            $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
-            $("#highScore").text("High score: " + highScore);
+            $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
+            $("#highScore").text("High Score: " + highScore);
             if (currentScore * currentMultiplier > highScore) {
                 highScore = currentScore * currentMultiplier;
             }
@@ -191,8 +191,8 @@ $(document).ready(function () {
 
         $(this).on("dropout", function (event, ui) {
             if ($(this).hasClass("draggingFalse")) {
-                $("#currentScore").text("Current score: " + (currentScore * currentMultiplier));
-                $("#highScore").text("High score: " + highScore);
+                $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
+                $("#highScore").text("High Score: " + highScore);
                 if (currentScore * currentMultiplier > highScore) {
                     highScore = currentScore * currentMultiplier;
                 }
