@@ -181,22 +181,20 @@ $(document).ready(function () {
 
     $(".board, .doubleLetter").each(function () {
         $(this).on("drop", function (event, ui) {
-            $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
-            $("#highScore").text("High Score: " + highScore);
             if (currentScore * currentMultiplier > highScore) {
                 highScore = currentScore * currentMultiplier;
             }
-            console.log(currentScore * currentMultiplier);
+            $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
+            $("#highScore").text("High Score: " + highScore);
         });
 
         $(this).on("dropout", function (event, ui) {
             if ($(this).hasClass("draggingFalse")) {
-                $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
-                $("#highScore").text("High Score: " + highScore);
                 if (currentScore * currentMultiplier > highScore) {
                     highScore = currentScore * currentMultiplier;
                 }
-                console.log(currentScore * currentMultiplier);
+                $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
+                $("#highScore").text("High Score: " + highScore);
             }
         });
     })
