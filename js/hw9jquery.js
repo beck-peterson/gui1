@@ -71,10 +71,23 @@ $(document).ready(function () {
     var bag = new Bag();
     $(".holder").each(function () {
         var tile = bag.getTile();
-        $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
+        if (tile != undefined) {
+            $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
+        }
     });
 
     $("#newTiles").click(function () {
+        $(".holder img").remove();
+        $(".holder").each(function () {
+            var tile = bag.getTile();
+            if (tile != undefined) {
+                $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
+            }
+        });
+    });
+
+    $("#newBag").click(function () {
+        bag = new Bag();
         $(".holder img").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
