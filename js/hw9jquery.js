@@ -91,7 +91,7 @@ $(document).ready(function () {
             }
         });
         // These reset the tiles and boards to be back to how they were for the new tiles
-        $(".board").each(function () {
+        $(".board, .doubleLetter").each(function () {
             var tileVal = 0;
             if ($(this).hasClass("value1")) {
                 tileVal = 1;
@@ -136,7 +136,7 @@ $(document).ready(function () {
             }
         });
         // These reset the tiles and boards to be back to how they were for the new tiles
-        $(".board").each(function () {
+        $(".board, .doubleLetter").each(function () {
             var tileVal = 0;
             if ($(this).hasClass("value1")) {
                 tileVal = 1;
