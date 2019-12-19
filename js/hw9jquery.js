@@ -202,17 +202,19 @@ $(document).ready(function () {
     $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     $(".dropLocation").droppable({
         drop: function (event, ui) {
-            if ($(this).hasClass("draggingTrue")) {
-                $(this).removeClass("draggingTrue");
-                $(this).addClass("draggingFalse");
-            }
+            $(this).droppable("option", "accept", ui.draggable); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable
+            //if ($(this).hasClass("draggingTrue")) {
+            //    $(this).removeClass("draggingTrue");
+            //    $(this).addClass("draggingFalse");
+            //}
         },
 
         out: function (event, ui) {
-            if ($(this).hasClass("draggingFalse")) {
-                $(this).removeClass("draggingFalse");
-                $(this).addClass("draggingTrue");
-            }
+            $(this).droppable("option", "accept", ".draggable"); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable
+           // if ($(this).hasClass("draggingFalse")) {
+            //    $(this).removeClass("draggingFalse");
+            //    $(this).addClass("draggingTrue");
+           // }
         }
     });
 
