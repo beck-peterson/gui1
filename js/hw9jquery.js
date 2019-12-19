@@ -78,6 +78,23 @@ $(document).ready(function () {
     $(".board").each(function () {
         $(this).on("drop", function (event, ui) {
             var tileVal = 0;
+            if ($(this).hasClass("value1")) {
+                tileVal = 1;
+            } else if ($(this).hasClass("value2")) {
+                tileVal = 2;
+            } else if ($(this).hasClass("value3")) {
+                tileVal = 3;
+            } else if ($(this).hasClass("value4")) {
+                tileVal = 4;
+            } else if ($(this).hasClass("value5")) {
+                tileVal = 5;
+            } else if ($(this).hasClass("value8")) {
+                tileVal = 8;
+            } else if ($(this).hasClass("value10")) {
+                tileVal = 10;
+            }
+            currentScore -= tileVal;
+            $(this).removeClass("value" + tileVal);
             if (ui.draggable.hasClass("value1")) {
                 tileVal = 1;
             } else if (ui.draggable.hasClass("value2")) {
@@ -124,6 +141,23 @@ $(document).ready(function () {
     $(".doubleLetter").each(function () {
         $(this).on("drop", function (event, ui) {
             var tileVal = 0;
+            if ($(this).hasClass("value2")) {
+                tileVal = 2;
+            } else if ($(this).hasClass("value4")) {
+                tileVal = 4;
+            } else if ($(this).hasClass("value6")) {
+                tileVal = 6;
+            } else if ($(this).hasClass("value8")) {
+                tileVal = 8;
+            } else if ($(this).hasClass("value10")) {
+                tileVal = 10;
+            } else if ($(this).hasClass("value16")) {
+                tileVal = 16;
+            } else if ($(this).hasClass("value20")) {
+                tileVal = 20;
+            }
+            currentScore -= tileVal;
+            $(this).removeClass("value" + tileVal);
             if (ui.draggable.hasClass("value1")) {
                 tileVal = 2;
             } else if (ui.draggable.hasClass("value2")) {
