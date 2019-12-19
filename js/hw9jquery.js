@@ -82,6 +82,7 @@ $(document).ready(function () {
     $("#newTiles").click(function () {
         currentScore = 0;
         currentMultiplier = 1;
+        $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
         $(".holder img").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
@@ -98,6 +99,8 @@ $(document).ready(function () {
         highScore = 0;
         currentScore = 0;
         currentMultiplier = 1;
+        $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
+        $("#highScore").text("High Score: " + highScore);
         $(".holder img").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
