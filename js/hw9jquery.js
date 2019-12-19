@@ -90,6 +90,7 @@ $(document).ready(function () {
                 $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
             }
         });
+        $(".dropLocation").droppable("option", "accept", ".draggable"); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable);
         $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     });
 
@@ -108,6 +109,7 @@ $(document).ready(function () {
                 $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
             }
         });
+        $(".dropLocation").droppable("option", "accept", ".draggable"); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable);
         $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     });
 
