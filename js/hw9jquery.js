@@ -74,6 +74,16 @@ $(document).ready(function () {
         $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
     });
 
+    $("#newTiles").onClick(function () {
+        $(".holder").remove();
+        $(".holder").each(function () {
+            var tile = bag.getTile();
+            if (tile != undefined) {
+                $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
+            }
+        });
+    });
+
     var currentScore = 0, highScore = 0, currentMultiplier = 1;
     $(".board").each(function () {
         $(this).on("drop", function (event, ui) {
@@ -115,26 +125,24 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            //if ($(this).hasClass("draggingFalse")) {
-                var tileVal = 0;
-                if ($(this).hasClass("value1")) {
-                    tileVal = 1;
-                } else if ($(this).hasClass("value2")) {
-                    tileVal = 2;
-                } else if ($(this).hasClass("value3")) {
-                    tileVal = 3;
-                } else if ($(this).hasClass("value4")) {
-                    tileVal = 4;
-                } else if ($(this).hasClass("value5")) {
-                    tileVal = 5;
-                } else if ($(this).hasClass("value8")) {
-                    tileVal = 8;
-                } else if ($(this).hasClass("value10")) {
-                    tileVal = 10;
-                }
-                currentScore -= tileVal;
-                $(this).removeClass("value" + tileVal);
-            //}
+            var tileVal = 0;
+            if ($(this).hasClass("value1")) {
+                tileVal = 1;
+            } else if ($(this).hasClass("value2")) {
+                tileVal = 2;
+            } else if ($(this).hasClass("value3")) {
+                tileVal = 3;
+            } else if ($(this).hasClass("value4")) {
+                tileVal = 4;
+            } else if ($(this).hasClass("value5")) {
+                tileVal = 5;
+            } else if ($(this).hasClass("value8")) {
+                tileVal = 8;
+            } else if ($(this).hasClass("value10")) {
+                tileVal = 10;
+            }
+            currentScore -= tileVal;
+            $(this).removeClass("value" + tileVal);
         });
     });
 
@@ -178,26 +186,24 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            //if ($(this).hasClass("draggingFalse")) {
-                var tileVal = 0;
-                if ($(this).hasClass("value2")) {
-                    tileVal = 2;
-                } else if ($(this).hasClass("value4")) {
-                    tileVal = 4;
-                } else if ($(this).hasClass("value6")) {
-                    tileVal = 6;
-                } else if ($(this).hasClass("value8")) {
-                    tileVal = 8;
-                } else if ($(this).hasClass("value10")) {
-                    tileVal = 10;
-                } else if ($(this).hasClass("value16")) {
-                    tileVal = 16;
-                } else if ($(this).hasClass("value20")) {
-                    tileVal = 20;
-                }
-                currentScore -= tileVal;
-                $(this).removeClass("value" + tileVal);
-            //}
+            var tileVal = 0;
+            if ($(this).hasClass("value2")) {
+                tileVal = 2;
+            } else if ($(this).hasClass("value4")) {
+                tileVal = 4;
+            } else if ($(this).hasClass("value6")) {
+                tileVal = 6;
+            } else if ($(this).hasClass("value8")) {
+                tileVal = 8;
+            } else if ($(this).hasClass("value10")) {
+                tileVal = 10;
+            } else if ($(this).hasClass("value16")) {
+                tileVal = 16;
+            } else if ($(this).hasClass("value20")) {
+                tileVal = 20;
+            }
+            currentScore -= tileVal;
+            $(this).removeClass("value" + tileVal);
         });
     });
 
@@ -223,13 +229,11 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            //if ($(this).hasClass("draggingFalse")) {
-                if (currentScore * currentMultiplier > highScore) {
-                    highScore = currentScore * currentMultiplier;
-                }
-                $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
-                $("#highScore").text("High Score: " + highScore);
-            //}
+            if (currentScore * currentMultiplier > highScore) {
+                highScore = currentScore * currentMultiplier;
+            }
+            $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
+            $("#highScore").text("High Score: " + highScore);
         });
     })
 
@@ -237,18 +241,10 @@ $(document).ready(function () {
     $(".dropLocation").droppable({
         drop: function (event, ui) {
             $(this).droppable("option", "accept", ui.draggable); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable
-            //if ($(this).hasClass("draggingTrue")) {
-            //    $(this).removeClass("draggingTrue");
-            //    $(this).addClass("draggingFalse");
-            //}
         },
 
         out: function (event, ui) {
             $(this).droppable("option", "accept", ".draggable"); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable
-            //if ($(this).hasClass("draggingFalse")) {
-            //    $(this).removeClass("draggingFalse");
-            //    $(this).addClass("draggingTrue");
-            //}
         }
     });
 
