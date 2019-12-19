@@ -75,7 +75,7 @@ $(document).ready(function () {
     });
 
     $("#newTiles").click(function () {
-        $(".holder").remove();
+        $(".holder img").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
             if (tile != undefined) {
