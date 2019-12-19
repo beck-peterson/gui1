@@ -84,6 +84,7 @@ $(document).ready(function () {
                 $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
             }
         });
+        $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     });
 
     $("#newBag").click(function () {
@@ -96,6 +97,7 @@ $(document).ready(function () {
                 $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
             }
         });
+        $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     });
 
     var currentScore = 0, highScore = 0, currentMultiplier = 1;
