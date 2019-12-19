@@ -114,7 +114,6 @@ $(document).ready(function () {
             } else if ($(this).hasClass("value20")) {
                 tileVal = 20;
             }
-            currentScore -= tileVal;
             $(this).removeClass("value" + tileVal);
         });
         $(".dropLocation").droppable("option", "accept", ".draggable"); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable);
