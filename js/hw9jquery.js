@@ -74,7 +74,7 @@ $(document).ready(function () {
         $(this).append("<img src=\"https://beck-peterson.github.io/gui1/gui1/hw9/Scrabble_Tile_" + tile.char + ".jpg\" style=\"pointer-events:auto;\" width=\"64\" height=\"64\" class=\"draggable value" + tile.value + "\"/>");
     });
 
-    $("#newTiles").onClick(function () {
+    $("#newTiles").click(function () {
         $(".holder").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
