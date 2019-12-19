@@ -7,36 +7,37 @@
 
 $(document).ready(function () {
 
+    // This is the bag that contains all the tiles. When you draw tiles they come out in a random order
     class Bag {
         constructor() {
             this.tiles = [];
-            this.addTiles(9, "A", 1, null);
-            this.addTiles(2, "B", 3, null);
-            this.addTiles(2, "C", 3, null);
-            this.addTiles(4, "D", 2, null);
-            this.addTiles(12, "E", 1, null);
-            this.addTiles(2, "F", 4, null);
-            this.addTiles(3, "G", 2, null);
-            this.addTiles(2, "H", 4, null);
-            this.addTiles(9, "I", 1, null);
-            this.addTiles(1, "J", 8, null);
-            this.addTiles(1, "K", 5, null);
-            this.addTiles(4, "L", 1, null);
-            this.addTiles(2, "M", 3, null);
-            this.addTiles(6, "N", 1, null);
-            this.addTiles(8, "O", 1, null);
-            this.addTiles(2, "P", 3, null);
-            this.addTiles(1, "Q", 10, null);
-            this.addTiles(6, "R", 1, null);
-            this.addTiles(4, "S", 1, null);
-            this.addTiles(6, "T", 1, null);
-            this.addTiles(4, "U", 1, null);
-            this.addTiles(2, "V", 4, null);
-            this.addTiles(2, "W", 4, null);
-            this.addTiles(1, "X", 8, null);
-            this.addTiles(2, "Y", 4, null);
-            this.addTiles(1, "Z", 10, null);
-            this.addTiles(2, "Blank", 0, null);
+            this.addTiles(9, "A", 1);
+            this.addTiles(2, "B", 3);
+            this.addTiles(2, "C", 3);
+            this.addTiles(4, "D", 2);
+            this.addTiles(12, "E", 1);
+            this.addTiles(2, "F", 4);
+            this.addTiles(3, "G", 2);
+            this.addTiles(2, "H", 4);
+            this.addTiles(9, "I", 1);
+            this.addTiles(1, "J", 8);
+            this.addTiles(1, "K", 5);
+            this.addTiles(4, "L", 1);
+            this.addTiles(2, "M", 3);
+            this.addTiles(6, "N", 1);
+            this.addTiles(8, "O", 1);
+            this.addTiles(2, "P", 3);
+            this.addTiles(1, "Q", 10);
+            this.addTiles(6, "R", 1);
+            this.addTiles(4, "S", 1);
+            this.addTiles(6, "T", 1);
+            this.addTiles(4, "U", 1);
+            this.addTiles(2, "V", 4);
+            this.addTiles(2, "W", 4);
+            this.addTiles(1, "X", 8);
+            this.addTiles(2, "Y", 4);
+            this.addTiles(1, "Z", 10);
+            this.addTiles(2, "Blank", 0);
             this.shakeBag();
         }
 
@@ -60,14 +61,15 @@ $(document).ready(function () {
         }
     }
 
+    // This is the tile with its associated character and value
     class Tile {
-        constructor(char, value, image) {
+        constructor(char, value) {
             this.char = char;
             this.value = value;
-            this.image = image;
         }
     }
 
+    // this starts off by giving the player 7 tiles
     var bag = new Bag();
     $(".holder").each(function () {
         var tile = bag.getTile();
@@ -76,7 +78,10 @@ $(document).ready(function () {
         }
     });
 
+    // this will give the player 7 new tiles until the bag runs out
     $("#newTiles").click(function () {
+        currentScore = 0;
+        currentMultiplier = 1;
         $(".holder img").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
@@ -87,9 +92,12 @@ $(document).ready(function () {
         $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     });
 
+    // this will reset the game and make a new bag
     $("#newBag").click(function () {
         bag = new Bag();
         highScore = 0;
+        currentScore = 0;
+        currentMultiplier = 1;
         $(".holder img").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
@@ -102,6 +110,7 @@ $(document).ready(function () {
 
     var currentScore = 0, highScore = 0, currentMultiplier = 1;
     $(".board").each(function () {
+        // This prevents scores from going out of control incase something goes wrong with the code
         $(this).on("drop", function (event, ui) {
             var tileVal = 0;
             if ($(this).hasClass("value1")) {
@@ -121,6 +130,7 @@ $(document).ready(function () {
             }
             currentScore -= tileVal;
             $(this).removeClass("value" + tileVal);
+            // Each board holds the value of the tile to know how to affect the score
             if (ui.draggable.hasClass("value1")) {
                 tileVal = 1;
             } else if (ui.draggable.hasClass("value2")) {
@@ -141,6 +151,7 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
+            // This changes the score when a tile is removed
             var tileVal = 0;
             if ($(this).hasClass("value1")) {
                 tileVal = 1;
@@ -162,6 +173,7 @@ $(document).ready(function () {
         });
     });
 
+    // this does the same as the board, but each tile holds double the weight
     $(".doubleLetter").each(function () {
         $(this).on("drop", function (event, ui) {
             var tileVal = 0;
@@ -224,6 +236,7 @@ $(document).ready(function () {
     });
 
     $(".doubleWord").each(function () {
+        // This keeps track of the overall multiplier if the player uses a double word score
         $(this).on("drop", function (event, ui) {
             currentMultiplier *= 2;
         });
@@ -235,6 +248,7 @@ $(document).ready(function () {
         });
     });
 
+    // This updates the current score and high score for any tile that is played on
     $(".board, .doubleLetter").each(function () {
         $(this).on("drop", function (event, ui) {
             if (currentScore * currentMultiplier > highScore) {
@@ -253,6 +267,7 @@ $(document).ready(function () {
         });
     })
 
+    // This makes the tiles draggable and the board spaces droppable for one tile at a time
     $(".draggable").draggable({ snap: ".dropLocation", snapMode: "inner" });
     $(".dropLocation").droppable({
         drop: function (event, ui) {
