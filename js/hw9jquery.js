@@ -115,7 +115,7 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            if ($(this).hasClass("draggingFalse")) {
+            //if ($(this).hasClass("draggingFalse")) {
                 var tileVal = 0;
                 if ($(this).hasClass("value1")) {
                     tileVal = 1;
@@ -134,7 +134,7 @@ $(document).ready(function () {
                 }
                 currentScore -= tileVal;
                 $(this).removeClass("value" + tileVal);
-            }
+            //}
         });
     });
 
@@ -178,7 +178,7 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            if ($(this).hasClass("draggingFalse")) {
+            //if ($(this).hasClass("draggingFalse")) {
                 var tileVal = 0;
                 if ($(this).hasClass("value2")) {
                     tileVal = 2;
@@ -197,7 +197,7 @@ $(document).ready(function () {
                 }
                 currentScore -= tileVal;
                 $(this).removeClass("value" + tileVal);
-            }
+            //}
         });
     });
 
@@ -223,13 +223,13 @@ $(document).ready(function () {
         });
 
         $(this).on("dropout", function (event, ui) {
-            if ($(this).hasClass("draggingFalse")) {
+            //if ($(this).hasClass("draggingFalse")) {
                 if (currentScore * currentMultiplier > highScore) {
                     highScore = currentScore * currentMultiplier;
                 }
                 $("#currentScore").text("Current Score: " + (currentScore * currentMultiplier));
                 $("#highScore").text("High Score: " + highScore);
-            }
+            //}
         });
     })
 
@@ -237,18 +237,18 @@ $(document).ready(function () {
     $(".dropLocation").droppable({
         drop: function (event, ui) {
             $(this).droppable("option", "accept", ui.draggable); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable
-            if ($(this).hasClass("draggingTrue")) {
-                $(this).removeClass("draggingTrue");
-                $(this).addClass("draggingFalse");
-            }
+            //if ($(this).hasClass("draggingTrue")) {
+            //    $(this).removeClass("draggingTrue");
+            //    $(this).addClass("draggingFalse");
+            //}
         },
 
         out: function (event, ui) {
             $(this).droppable("option", "accept", ".draggable"); // assisted by Likwid_T from https://stackoverflow.com/questions/3948447/jquery-ui-droppable-only-accept-one-draggable
-            if ($(this).hasClass("draggingFalse")) {
-                $(this).removeClass("draggingFalse");
-                $(this).addClass("draggingTrue");
-            }
+            //if ($(this).hasClass("draggingFalse")) {
+            //    $(this).removeClass("draggingFalse");
+            //    $(this).addClass("draggingTrue");
+            //}
         }
     });
 
