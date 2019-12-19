@@ -88,6 +88,7 @@ $(document).ready(function () {
 
     $("#newBag").click(function () {
         bag = new Bag();
+        highScore = 0;
         $(".holder img").remove();
         $(".holder").each(function () {
             var tile = bag.getTile();
