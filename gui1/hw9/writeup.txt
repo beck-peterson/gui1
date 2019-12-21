@@ -1,0 +1,1 @@
+The places where I used someone's code to support my own is written in the code base, and everything for the main assignment was completed to 100%.
